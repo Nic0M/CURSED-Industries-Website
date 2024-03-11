@@ -65,7 +65,7 @@ async function getActiveFlights() {
 		// Add element to table div
 		table_div.appendChild(last_refreshed_element);
 		// Add last refreshed date to element
-		updateDateStr(data.last_refreshed);
+		updateDateStr(data.current_time);
 
 		
 		// Create table
