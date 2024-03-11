@@ -25,7 +25,7 @@ function updateDateStr(last_refreshed) {
 	}
 	// Get last refreshed date as a string
 	const last_refreshed_date = new Date(last_refreshed); // only Date object has toLocaleString method
-	const last_refreshed_date_str = last_refreshed_date.toLocaleString(); // make sure last_refreshed is in milliseconds
+	const last_refreshed_date_str = last_refreshed_date.toLocaleString('en-US', {timeZone: "America/Denver"}); // make sure last_refreshed is in milliseconds
 	time_string += ' at ' + last_refreshed_date_str;
 
 	// Get last refreshed element and update text
@@ -103,7 +103,7 @@ async function getActiveFlights() {
 
 		
 		table_div.appendChild(table);
-		setInterval(() => updateDateStr(data.current_time), 10e3); // Update last refreshed time every 10 seconds
+		setInterval(() => updateDateStr(data.current_time), 3141); // Update last refreshed time every pi seconds
 	}
 	catch (error) {
 		console.log('Error:', error);
