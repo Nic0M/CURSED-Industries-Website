@@ -162,6 +162,8 @@ async function getActiveFlights() {
 		search_bar_div.setAttribute('id', 'active-flights-search-bar-div');
 		// Add search bar div to table div
 		table_div.appendChild(search_bar_div);
+		// Create search bar
+		createSearchBar('active-flights-search-bar-div', 'active-flights-table');
 
 		// Create last refreshed paragraph
 		const last_refreshed_element = document.createElement('p');
@@ -228,4 +230,3 @@ async function getActiveFlights() {
 
 console.log("Creating active flights table");
 getActiveFlights();
-createSearchBar('active-flights-search-bar-div', 'active-flights-table');
