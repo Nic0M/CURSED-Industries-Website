@@ -12,20 +12,47 @@ function updateDateStr(last_refreshed) {
 	// Create time string
 	let time_string = 'Last refreshed: ';
 	if (elapsed_time < 60) {
-		time_string += Math.round(elapsed_time).toString() + ' seconds ago';
+		time_string += Math.round(elapsed_time).toString();
+		if (elapsed_time !== 1) {
+			time_string += ' seconds ago';
+		}
+		else {
+			time_string += ' second ago';
+		}
 	}
 	else if (elapsed_time < 3600) {
-		time_string += Math.round(elapsed_time / 60).toString() + ' minutes ago';
+		const minutes = Math.round(elapsed_time / 60);
+		time_string += minutes.toString()
+		if(minutes !== 1) {
+			time_string += ' minutes ago';
+		}
+		else {
+			time_string += ' minute ago';
+		}
 	}
 	else if (elapsed_time < 86400) {
-		time_string += Math.round(elapsed_time / 3600).toString() + ' hours ago';
+		const hours = Math.round(elapsed_time / 3600);
+		time_string += hours.toString();
+		if(hours !== 1) {
+			time_string += ' hours ago';
+		}
+		else {
+			time_string += ' hour ago';
+		}
 	}
 	else {
-		time_string += Math.round(elapsed_time / 86400).toString() + ' days ago';
+		const days = Math.round(elapsed_time / 86400);
+		time_string += days.toString();
+		if(days !== 1) {
+			time_string += ' days ago';
+		}
+		else {
+			time_string += ' day ago';
+		}
 	}
 	// Get last refreshed date as a string
 	const last_refreshed_date = new Date(last_refreshed); // only Date object has toLocaleString method
-	const last_refreshed_date_str = last_refreshed_date.toLocaleString('en-US', {timeZone: "America/Denver"}); // make sure last_refreshed is in milliseconds
+	const last_refreshed_date_str = last_refreshed_date.toLocaleString('en-US', {timeZone: "America/Denver", timeZoneName: "short"}); // make sure last_refreshed is in milliseconds
 	time_string += ' at ' + last_refreshed_date_str;
 
 	// Get last refreshed element and update text
