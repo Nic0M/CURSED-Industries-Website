@@ -15,6 +15,7 @@ async function getActiveFlights() {
 
 		// Create table header
 		const header = table.createTHead();
+		table.setAttribute('class', 'table table-striped');
 
 		//	Create table header row
 		const headerRow = header.insertRow();
