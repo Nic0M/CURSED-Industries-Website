@@ -100,6 +100,7 @@ async function getActiveFlights() {
 		});
 
 		table_div.appendChild(table);
+		setInterval(() => updateDateStr(data.last_refreshed), 750);
 	}
 	catch (error) {
 		console.log('Error:', error);
@@ -119,4 +120,3 @@ async function getActiveFlights() {
 
 console.log("Creating active flights table");
 getActiveFlights();
-setInterval(updateDateStr, 750);
