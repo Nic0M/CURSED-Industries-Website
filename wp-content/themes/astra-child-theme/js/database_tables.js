@@ -5,9 +5,13 @@ async function getActiveFlights() {
 		const data = await response.json();
 		console.log(data);
 
+		// Create table div
+		const table_div = document.getElementById('active-flights-table');
+		// Clear table div
+		table_div.innerHTML = '';
 		// Create table
-		const table = document.getElementById('active-flights-table');
-		table.innerHTML = ''; // Clear table
+		const table = document.createElement('table');
+
 
 		// Create table header
 		const header = table.createTHead();
@@ -37,6 +41,8 @@ async function getActiveFlights() {
 			row.insertCell().innerHTML = flight.heading; // Current heading
 			row.insertCell().innerHTML = flight.timestamp; // Last updated
 		});
+
+		table_div.appendChild(table);
 	}
 	catch (error) {
 		console.log('Error:', error);
@@ -53,3 +59,6 @@ async function getActiveFlights() {
 // 		console.log('Error:', error);
 // 	}
 // }
+
+console.log("Creating active flights table");
+getActiveFlights();
