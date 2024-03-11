@@ -16,19 +16,41 @@ $dronedb = new wpdb(
 		$database_access['dbhost']
 		);
 
+/*
+ * Hello, World! REST API endpoint
+ */
 add_action('rest_api_init', 
 	function() { 
-		register_rest_route('myplugin/v1', '/hello/', 
+		register_rest_route('hello-world/v1', '/hello/', 
 			array(
 			'methods' => 'GET',
-			'callback' => 'my_custom_endpoint',
+			'callback' => 'hello_world_endpoint',
 			)
 		);
 	}
 );
-
-function my_custom_endpoint($data) {
+function hello_world_endpoint($data) {
 	return new WP_REST_Response(array('message' => 'Hello, World!'), 200);
+}
+
+/*
+ * Add REST API endpoint to retrieve active flights from database
+ */
+add_action('rest_api_init', 
+	function() { 
+		register_rest_route('drones/v1', '/active-flights/', 
+			array(
+			'methods' => 'GET',
+			'callback' => 'active_flights_endpoint',
+			)
+		);
+	}
+);
+function active_flights_endpoint($data) {
+	global $dronedb;
+	$table_name = 'active_flights';
+	$results = $dronedb->get_results("SELECT * FROM $table_name");
+	return new WP_REST_Response($results, 200);
 }
 
 function load_completed_flight_table_function() {
