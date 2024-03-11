@@ -103,7 +103,7 @@ async function getActiveFlights() {
 
 		
 		table_div.appendChild(table);
-		setInterval(() => updateDateStr(data.last_refreshed), 750);
+		setInterval(() => updateDateStr(data.current_time), 10e3); // Update last refreshed time every 10 seconds
 	}
 	catch (error) {
 		console.log('Error:', error);
