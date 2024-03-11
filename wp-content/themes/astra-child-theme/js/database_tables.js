@@ -65,6 +65,77 @@ function updateDateStr(last_refreshed) {
 	}
 }
 
+/*
+ * Create search bar
+ */
+function createSearchBar(search_bar_div, table_id) {
+	// Get search bar div
+	const search_div = document.getElementById(search_bar_div);
+	// Check if search bar div does not exist
+	if (!search_div) {
+		console.log('Search bar div does not exist:', search_bar_div);
+		console.log('Cannot create search bar.');
+		return;
+	}
+
+	// Clear search bar div
+	search_div.innerHTML = '';
+
+	// Create search bar
+	const search_bar = document.createElement('input');
+	// Add ID to search bar
+	const search_bar_id = table_id + '-search-bar';
+	search_bar.setAttribute('id', search_bar_id);
+	// Add placeholder text to search bar
+	search_bar.setAttribute('placeholder', 'Search by unique ID, flight date, or location...');
+	// Add class to search bar
+	search_bar.setAttribute('class', 'form-control'); // Bootstrap (CSS framework) class
+	// Add event listener to search bar
+	search_bar.addEventListener('input', function() {
+		searchTable(search_bar_id, table_id);
+	});
+
+	// Add search bar to search bar div
+	search_div.appendChild(search_bar);
+}
+
+/*
+ * Searches a table and updates the visibility of rows based on the search value (case-insensitive)
+ */
+function searchTable(search_bar_id, table_id) {
+	// Get the input from the search bar and convert to lowercase
+	const search_value = document.getElementById(search_bar_id).value.toLowerCase();
+
+	// Get table
+	const table = document.getElementById(table_id);
+	// Get table rows
+	const rows = table.getElementsByTagName('tr');
+
+	// Loop through table rows and check if an element in the row contains the search value
+	for (let i = 0; i < rows.length; i++) {
+		// Get cells in current row
+		const cells = rows[i].getElementsByTagName('td');
+		let found = false;
+		// Loop through cells in current row
+		for (let j = 0; j < cells.length; j++) {
+			// Get cell value
+			const cell_value = cells[j].innerText.toLowerCase();
+			// Check if cell value contains search value
+			if (cell_value.includes(search_value)) {
+				found = true;
+				break;
+			}
+		}
+		// Show or hide row based on search value
+		if (found) {
+			rows[i].style.display = '';
+		}
+		else {
+			rows[i].style.display = 'none';
+		}
+	}
+}
+
 async function getActiveFlights() {
 	try {
 		// Fetch active flights
@@ -85,6 +156,13 @@ async function getActiveFlights() {
 			return;
 		}
 		
+		// Create search bar div
+		const search_bar_div = document.createElement('div');
+		// Add ID to search bar div
+		search_bar_div.setAttribute('id', 'active-flights-search-bar-div');
+		// Add search bar div to table div
+		table_div.appendChild(search_bar_div);
+
 		// Create last refreshed paragraph
 		const last_refreshed_element = document.createElement('p');
 		// Add ID to element
@@ -150,3 +228,4 @@ async function getActiveFlights() {
 
 console.log("Creating active flights table");
 getActiveFlights();
+createSearchBar('active-flights-search-bar-div', 'active-flights-table');
