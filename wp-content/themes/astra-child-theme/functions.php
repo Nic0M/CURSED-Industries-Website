@@ -53,6 +53,11 @@ function active_flights_endpoint($data) {
 	return new WP_REST_Response($results, 200);
 }
 
+function astra_child_theme_enqueue_scripts() {
+    wp_enqueue_script('database_tables', get_template_directory_uri() . '/js/database_tables.js', array(), false, true);
+}
+add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
+
 function load_completed_flight_table_function() {
 
 	# Debug
@@ -70,6 +75,8 @@ function load_completed_flight_table_function() {
 	if ($dronedb->last_error) {
   		echo 'Oops! ' . $dronedb->last_error . '<br>';
 	}
+
+	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
 
 	$refresh_time = current_time('U');
 	echo "\n<p>Current time: $refresh_time</p>";
