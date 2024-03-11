@@ -65,10 +65,10 @@ function active_flights_endpoint($data) {
 	$response = array(
 		'flights' => $results,
 		'current_time' => $current_time,
-	)
+	);
 
 	// Return HTTP response 200 (OK)
-	return new WP_REST_Response($results, 200);
+	return new WP_REST_Response($response, 200);
 }
 
 function astra_child_theme_enqueue_scripts() {
