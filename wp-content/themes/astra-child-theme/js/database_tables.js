@@ -1,8 +1,50 @@
+function updateDateStr(last_refreshed) {
+
+	// Convert last refreshed time to milliseconds
+	last_refreshed *= 1000;
+
+	// Get current time in milliseconds
+	const current_time = Date.now();
+
+	// Get elapsed time in seconds
+	const elapsed_time = (current_time - last_refreshed) / 1000;
+
+	// Create time string
+	let time_string = 'Last refreshed: ';
+	if (elapsed_time < 60) {
+		time_string += Math.round(elapsed_time).toString() + ' seconds ago';
+	}
+	else if (elapsed_time < 3600) {
+		time_string += Math.round(elapsed_time / 60).toString() + ' minutes ago';
+	}
+	else if (elapsed_time < 86400) {
+		time_string += Math.round(elapsed_time / 3600).toString() + ' hours ago';
+	}
+	else {
+		time_string += Math.round(elapsed_time / 86400).toString() + ' days ago';
+	}
+	// Get last refreshed date as a string
+	const last_refreshed_date = new Date(last_refreshed); // only Date object has toLocaleString method
+	const last_refreshed_date_str = last_refreshed_date.toLocaleString(); // make sure last_refreshed is in milliseconds
+	time_string += ' at ' + last_refreshed_date_str;
+
+	// Get last refreshed element and update text
+	const last_refreshed_element = document.getElementById('last-refreshed-text');
+	if (last_refreshed_element) {
+		last_refreshed_element.innerText = time_string;
+	}
+	else {
+		console.log('Could not find last refreshed element, cannot update time string.');
+	}
+}
+
 async function getActiveFlights() {
 	try {
 		// Fetch active flights
 		const response = await fetch('https://cursedindustries.com/wp-json/drones/v1/active-flights');
 		const data = await response.json();
+
+		// Log response
 		console.log(data);
 
 		// Get table div
@@ -16,10 +58,16 @@ async function getActiveFlights() {
 			return;
 		}
 		
+		// Create last refreshed paragraph
+		const last_refreshed_element = document.createElement('p');
+		// Add ID to element
+		last_refreshed_element.setAttribute('id', 'last-refreshed-text');
+		// Add last refreshed date to element
+		updateDateStr(data.last_refreshed);
+
 		
 		// Create table
 		const table = document.createElement('table');
-
 
 		// Create table header
 		const header = table.createTHead();
@@ -39,7 +87,7 @@ async function getActiveFlights() {
 		headerRow.insertCell().innerHTML = 'Last Updated';
 
 		// Create table body
-		data.forEach(flight => {
+		data.flights.forEach(flight => {
 			const row = table.insertRow();
 			row.insertCell().innerHTML = flight.unique_id; // Unique ID
 			row.insertCell().innerHTML = flight.lat; // Current latitude
@@ -71,3 +119,4 @@ async function getActiveFlights() {
 
 console.log("Creating active flights table");
 getActiveFlights();
+setInterval(updateDateStr, 750);

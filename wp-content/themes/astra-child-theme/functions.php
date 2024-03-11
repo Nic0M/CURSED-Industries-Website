@@ -15,6 +15,7 @@ $dronedb = new wpdb(
 		$database_access['dbname'],
 		$database_access['dbhost']
 		);
+// TODO: fix the database connection failing silently if credentials are wrong
 
 /*
  * Hello, World! REST API endpoint
@@ -60,8 +61,11 @@ function active_flights_endpoint($data) {
   	}
 
 	// Add the current time to the JSON response
-	// $current_time = current_time('U');
-	// $results['current_time'] = $current_time;
+	$current_time = current_time('U');
+	$response = array(
+		'flights' => $results,
+		'current_time' => $current_time,
+	)
 
 	// Return HTTP response 200 (OK)
 	return new WP_REST_Response($results, 200);
