@@ -54,7 +54,7 @@ function active_flights_endpoint($data) {
 }
 
 function astra_child_theme_enqueue_scripts() {
-    wp_enqueue_script('database_tables', get_template_directory_uri() . '/js/database_tables.js', array(), false, true);
+    wp_enqueue_script('database_tables', get_stylesheet_directory_uri() . '/js/database_tables.js', array(), false, true);
 }
 add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
 
