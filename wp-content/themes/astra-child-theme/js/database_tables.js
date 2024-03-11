@@ -62,6 +62,8 @@ async function getActiveFlights() {
 		const last_refreshed_element = document.createElement('p');
 		// Add ID to element
 		last_refreshed_element.setAttribute('id', 'last-refreshed-text');
+		// Add element to table div
+		table_div.appendChild(last_refreshed_element);
 		// Add last refreshed date to element
 		updateDateStr(data.last_refreshed);
 
@@ -99,6 +101,7 @@ async function getActiveFlights() {
 			row.insertCell().innerHTML = flight.timestamp; // Last updated
 		});
 
+		
 		table_div.appendChild(table);
 		setInterval(() => updateDateStr(data.last_refreshed), 750);
 	}
