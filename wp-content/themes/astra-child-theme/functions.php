@@ -48,8 +48,22 @@ add_action('rest_api_init',
 );
 function active_flights_endpoint($data) {
 	global $dronedb;
+
+	// Select all rows from active flights table in the database
 	$table_name = 'active_flights';
 	$results = $dronedb->get_results("SELECT * FROM $table_name");
+
+	// Check for error
+	if ($dronedb->last_error) {
+		error_log($dronedb->last_error);
+		return new WP_REST_Response(array('error' => 'Internal Server Error'), 500);
+  	}
+
+	// Add the current time to the JSON response
+	$current_time = current_time('U');
+	$results['current_time'] = $current_time;
+
+	// Return HTTP response 200 (OK)
 	return new WP_REST_Response($results, 200);
 }
 

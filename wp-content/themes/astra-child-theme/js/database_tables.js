@@ -5,10 +5,18 @@ async function getActiveFlights() {
 		const data = await response.json();
 		console.log(data);
 
-		// Create table div
+		// Get table div
 		const table_div = document.getElementById('active-flights-table');
 		// Clear table div
 		table_div.innerHTML = '';
+
+		// Check if HTTP response is not OK
+		if (response.status !== 200) {
+			table_div.innerHTML = 'Error: Could not fetch list of active flights. Please try again later.'
+			return;
+		}
+		
+		
 		// Create table
 		const table = document.createElement('table');
 
