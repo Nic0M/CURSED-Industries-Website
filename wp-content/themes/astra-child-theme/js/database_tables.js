@@ -12,7 +12,7 @@ function updateDateStr(last_refreshed) {
 	// Create time string
 	let time_string = 'Last refreshed: ';
 	if (elapsed_time < 60) {
-		time_string += Math.round(elapsed_time).toString();
+		time_string += Math.floor(elapsed_time).toString();
 		if (elapsed_time !== 1) {
 			time_string += ' seconds ago';
 		}
@@ -21,7 +21,7 @@ function updateDateStr(last_refreshed) {
 		}
 	}
 	else if (elapsed_time < 3600) {
-		const minutes = Math.round(elapsed_time / 60);
+		const minutes = Math.floor(elapsed_time / 60);
 		time_string += minutes.toString()
 		if(minutes !== 1) {
 			time_string += ' minutes ago';
@@ -31,7 +31,7 @@ function updateDateStr(last_refreshed) {
 		}
 	}
 	else if (elapsed_time < 86400) {
-		const hours = Math.round(elapsed_time / 3600);
+		const hours = Math.floor(elapsed_time / 3600);
 		time_string += hours.toString();
 		if(hours !== 1) {
 			time_string += ' hours ago';
@@ -41,7 +41,7 @@ function updateDateStr(last_refreshed) {
 		}
 	}
 	else {
-		const days = Math.round(elapsed_time / 86400);
+		const days = Math.floor(elapsed_time / 86400);
 		time_string += days.toString();
 		if(days !== 1) {
 			time_string += ' days ago';
