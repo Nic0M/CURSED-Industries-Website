@@ -238,6 +238,8 @@ async function getActiveFlights() {
 		// Create table header
 		const header = table.createTHead();
 		table.setAttribute('class', 'table table-striped');
+		// Color header row blue
+		header.setAttribute('style', 'background-color: #007bff; color: white;');
 
 		//	Create table header row
 		const headerRow = header.insertRow();
@@ -338,8 +340,11 @@ async function getHistoricalFlights() {
 		// Create table
 		const table = document.createElement('table');
 		table.setAttribute('class', 'table table-striped');
+
 		// Create header
 		const table_header = table.createTHead();
+		// Color header row blue
+		header.setAttribute('style', 'background-color: #007bff; color: white;');
 		const header_row = table_header.insertRow();
 		header_row.insertCell().innerHTML = 'Unique ID';
 		header_row.insertCell().innerHTML = 'Duration';
@@ -426,6 +431,8 @@ async function getRemoteIDPackets() {
 
 		// Create table header
 		const header = table.createTHead();
+		// Color header row blue
+		header.setAttribute('style', 'background-color: #007bff; color: white;');
 		const headerRow = header.insertRow();
 		// Create table header cells
 		headerRow.insertCell().innerHTML = 'Unique ID';
