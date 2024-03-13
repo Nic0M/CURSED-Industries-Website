@@ -241,7 +241,7 @@ async function getActiveFlights() {
 
 		//	Create table header row
 		const headerRow = header.insertRow();
-		headerRow.setAttribute('style', 'background-color: #00ffff; color: white;'); // Cyan header
+		headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
 
 		// Create table header cells
 		headerRow.insertCell().innerHTML = 'Unique ID';
@@ -343,7 +343,7 @@ async function getHistoricalFlights() {
 		// Create header
 		const table_header = table.createTHead();
 		const header_row = table_header.insertRow();
-		header_row.setAttribute('style', 'background-color: #00ffff; color: white;'); // Cyan header
+		header_row.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
 		header_row.insertCell().innerHTML = 'Unique ID';
 		header_row.insertCell().innerHTML = 'Duration';
 		header_row.insertCell().innerHTML = 'Start Time';
@@ -431,7 +431,7 @@ async function getRemoteIDPackets() {
 		const header = table.createTHead();
 		// Color header row
 		const headerRow = header.insertRow();
-		headerRow.setAttribute('style', 'background-color: #00ffff; color: white;'); // Cyan header
+		headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
 		// Create table header cells
 		headerRow.insertCell().innerHTML = 'Unique ID';
 		headerRow.insertCell().innerHTML = 'Timestamp';
