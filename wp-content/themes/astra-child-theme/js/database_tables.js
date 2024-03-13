@@ -269,7 +269,7 @@ async function getActiveFlights() {
 		if (active_flights_refresh_time_text_interval_id !== 0) {
 			clearInterval(active_flights_refresh_time_text_interval_id);
 		}
-		active_flights_refresh_time_text_interval_id = setInterval(() => updateDateStr(data.current_time, class_name), 3141); // Update last refreshed time every pi seconds
+		active_flights_refresh_time_text_interval_id = setInterval(() => updateDateStr(data.current_time, class_name), refresh_text_interval_time); // Update last refreshed time text
 	}
 	catch (error) {
 		console.log('Error:', error);
@@ -333,7 +333,7 @@ async function getHistoricalFlights() {
 		if (historical_fligts_refresh_time_text_interval_id !== 0) {
 			clearInterval(historical_fligts_refresh_time_text_interval_id);
 		}
-		historical_fligts_refresh_time_text_interval_id = setInterval(() => updateDateStr(current_time, refresh_text_class_name), 2000); // Update elapsed time every 2 seconds
+		historical_fligts_refresh_time_text_interval_id = setInterval(() => updateDateStr(current_time, refresh_text_class_name), refresh_text_interval_time); // Update elapsed time every
 
 		// Create table
 		const table = document.createElement('table');
@@ -368,6 +368,7 @@ async function getHistoricalFlights() {
 
 let active_flights_refresh_time_text_interval_id = 0;
 let historical_fligts_refresh_time_text_interval_id = 0;
+let refresh_text_interval_time = 3000; // 3 seconds (3000 milliseconds)
 console.log("Creating active flights table");
 getActiveFlights();
 console.log("Creating historical flights table");
