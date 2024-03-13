@@ -1,3 +1,32 @@
+function format_speed(speed) {
+	return speed + ' m/s';
+}
+
+function format_altitude(altitude) {
+	return altitude + ' m';
+}
+
+function format_heading(heading) {
+	return heading + '°';
+}
+
+function format_latitude(latitude) {
+	if (latitude < 0) {
+		return Math.abs(latitude) + '° S';
+	}
+	else {
+		return latitude + '° N';
+	}
+}
+function format_longitude(longitude) {
+	if (longitude < 0) {
+		return Math.abs(longitude) + '° W';
+	}
+	else {
+		return longitude + '° E';
+	}
+}
+
 function format_duration(seconds) {
 	if (seconds < 60) {
 		const word = seconds === 1 ? ' second' : ' seconds';
@@ -227,12 +256,12 @@ async function getActiveFlights() {
 		data.flights.forEach(flight => {
 			const row = table.insertRow();
 			row.insertCell().innerHTML = flight.unique_id; // Unique ID
-			row.insertCell().innerHTML = flight.lat; // Current latitude
-			row.insertCell().innerHTML = flight.lon; // Current longitude
-			row.insertCell().innerHTML = flight.alt; // Current altitude
-			row.insertCell().innerHTML = flight.gnd_speed; // Current ground speed
-			row.insertCell().innerHTML = flight.vert_speed; // Current vertical speed
-			row.insertCell().innerHTML = flight.heading; // Current heading
+			row.insertCell().innerHTML = format_lattitude(flight.lat); // Current latitude
+			row.insertCell().innerHTML = format_longitude(flight.lon); // Current longitude
+			row.insertCell().innerHTML = format_altitude(flight.alt); // Current altitude
+			row.insertCell().innerHTML = format_speed(flight.gnd_speed); // Current ground speed
+			row.insertCell().innerHTML = format_speed(flight.vert_speed); // Current vertical speed
+			row.insertCell().innerHTML = format_heading(flight.heading); // Current heading
 			row.insertCell().innerHTML = flight.timestamp; // Last updated
 		});
 
@@ -321,8 +350,8 @@ async function getHistoricalFlights() {
 			row.insertCell().innerHTML = format_duration(flight.duration);
 			row.insertCell().innerHTML = flight.start_time;
 			row.insertCell().innerHTML = flight.end_time;
-			row.insertCell().innerHTML = flight.max_height_agl;
-			row.insertCell().innerHTML = flight.max_gnd_speed;
+			row.insertCell().innerHTML = format_altitude(flight.max_height_agl);
+			row.insertCell().innerHTML = format_speed(flight.max_gnd_speed);
 		});
 		table_div.appendChild(table);
 	}
@@ -335,3 +364,8 @@ console.log("Creating active flights table");
 getActiveFlights();
 console.log("Creating historical flights table");
 getHistoricalFlights();
+
+// Set auto-refresh interval on active flights table to be 30 seconds
+setInterval(getActiveFlights, 30000);
+// Set auto-refresh interval on historical flights table to be 5 minutes
+setInterval(getHistoricalFlights, 300000);
