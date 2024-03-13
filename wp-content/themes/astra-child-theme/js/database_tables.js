@@ -74,14 +74,12 @@ function updateDateStr(last_refreshed) {
 	const last_refreshed_date_str = last_refreshed_date.toLocaleString('en-US', {timeZone: "America/Denver", timeZoneName: "short"}); // make sure last_refreshed is in milliseconds
 	time_string += ' at ' + last_refreshed_date_str;
 
-	// Get last refreshed element and update text
-	const last_refreshed_element = document.getElementById('last-refreshed-text');
-	if (last_refreshed_element) {
-		last_refreshed_element.innerText = time_string;
-	}
-	else {
-		console.log('Could not find last refreshed element, cannot update time string.');
-	}
+	// Get all last refreshed elements by class
+	const last_refreshed_elements = document.getElementsByClassName('last-refreshed-text');
+	// Update text for each last refreshed element
+	last_refreshed_elements.forEach(element => {
+		element.innerText = time_string;
+	});
 }
 
 /*
@@ -188,7 +186,7 @@ async function getActiveFlights() {
 		// Create last refreshed paragraph
 		const last_refreshed_element = document.createElement('p');
 		// Add ID to element
-		last_refreshed_element.setAttribute('id', 'last-refreshed-text');
+		last_refreshed_element.setAttribute('class', 'last-refreshed-text');
 		// Add element to table div
 		table_div.appendChild(last_refreshed_element);
 		// Add last refreshed date to element
@@ -274,7 +272,7 @@ async function getHistoricalFlights() {
 
 		// Create last refreshed text entry
 		const last_refreshed_element = document.createElement('p');
-		last_refreshed_element.setAttribute('id', 'last-refreshed-text');
+		last_refreshed_element.setAttribute('class', 'last-refreshed-text');
 		table_div.appendChild(last_refreshed_element);
 		// Check for error
 		if (data.current_time !== undefined) {

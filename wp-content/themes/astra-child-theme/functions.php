@@ -114,63 +114,11 @@ function astra_child_theme_enqueue_scripts() {
 add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
 
 function load_completed_flight_table_function() {
-
 	# Debug
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
 
-	# Import global database variable
-	global $dronedb;	
-
-	// Select all rows from completed flights table
-	$table_name = 'completed_flights';	
-	$results = $dronedb->get_results("SELECT * FROM $table_name");
-
-	// Check for error
-	if ($dronedb->last_error) {
-  		echo 'Oops! ' . $dronedb->last_error . '<br>';
-	}
-
 	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
 	echo "<div id='historical-flights-table'>Loading historical flights...</div>\n";
-
-	$refresh_time = current_time('U');
-	echo "\n<p>Current time: $refresh_time</p>";
-	echo "\n<p>Last refreshed <span id='dateElement'>0</span> seconds ago.</p>";
-	echo "
-<script>
-function updateDate() {
-	let last_refreshed = $refresh_time;
-	document.getElementById('dateElement').innerText = (Math.round(Date.now()/1000-last_refreshed)).toString();
-}
-setInterval(updateDate, 1000);
-</script>\n";
-	// Check if data was returned
-	if (!empty($results)) {
-		echo "\n<table width='80%' style='border-collapse: collapse;'>\n";
-		echo "\t<tbody>\n";
-		echo "\t\t<tr>\n";
-		echo "\t\t\t<th>Unique ID</th>\n";
-		echo "\t\t\t<th>Duration (min)</th>\n";
-		echo "\t\t\t<th>Max Altitude (m)</th>\n";
-		echo "\n\t\t</tr>\n";
-
-		// Vertical line separating column headers from body
-		echo "\t\t<tr>\n" . "\t\t\t<td colspan='3'><hr size='1'></td>\n" . "\t\t</tr>\n";
-
-		foreach($results as $row) {
-			echo "\t\t<tr>\n";
-			echo "\t\t\t<td>" . $row->UniqueID . "</td>\n";
-			echo "\t\t\t<td>" . round($row->Duration / 60, 1) . "</td>\n";
-			echo "\t\t\t<td>" . $row->MaxAltitude . "</td>\n";
-			echo "\t\t</tr>\n";
-		}
-
-		echo "\t</tbody>\n";
-		echo "</table>";	
-	}
-	else {
-		return '<p>No flights recorded &#x1F6E9</p>';
-	}
 }
 add_shortcode('load_completed_flight_table', 'load_completed_flight_table_function');
