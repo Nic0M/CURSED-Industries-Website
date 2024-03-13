@@ -256,7 +256,7 @@ async function getActiveFlights() {
 		data.flights.forEach(flight => {
 			const row = table.insertRow();
 			row.insertCell().innerHTML = flight.unique_id; // Unique ID
-			row.insertCell().innerHTML = format_lattitude(flight.lat); // Current latitude
+			row.insertCell().innerHTML = format_latitude(flight.lat); // Current latitude
 			row.insertCell().innerHTML = format_longitude(flight.lon); // Current longitude
 			row.insertCell().innerHTML = format_altitude(flight.alt); // Current altitude
 			row.insertCell().innerHTML = format_speed(flight.gnd_speed); // Current ground speed
