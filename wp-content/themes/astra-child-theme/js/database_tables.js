@@ -1,23 +1,30 @@
 function format_duration(seconds) {
 	if (seconds < 60) {
-		const word = seconds === 1 ? 'second' : 'seconds';
+		const word = seconds === 1 ? ' second' : ' seconds';
 		return seconds + word;
 	}
 	else if (seconds < 3600) {
-		const word = Math.floor(seconds / 60) === 1 ? 'minute' : 'minutes';
+		const word = Math.floor(seconds / 60) === 1 ? ' minute' : ' minutes';
 		return Math.floor(seconds / 60) + word + format_duration(seconds % 60);
 	}
 	else if (seconds < 86400) {
-		const word = Math.floor(seconds / 3600) === 1 ? 'hour' : 'hours';
+		const word = Math.floor(seconds / 3600) === 1 ? ' hour' : ' hours';
 		return Math.floor(seconds / 3600) + word + format_duration(seconds % 3600);
 	}
 	else {
-		const word = Math.floor(seconds / 86400) === 1 ? 'day' : 'days';
+		const word = Math.floor(seconds / 86400) === 1 ? ' day' : ' days';
 		return Math.floor(seconds / 86400) + word + format_duration(seconds % 86400);
 	}
 }
 
 function updateDateStr(last_refreshed) {
+
+	// Get all last refreshed elements by class
+	const last_refreshed_elements = document.getElementsByClassName('last-refreshed-text');
+	if (last_refreshed_elements.length === 0) {
+		console.log('No last refreshed elements found. Cannot update last refreshed time.');
+		return;
+	}
 
 	// Convert last refreshed time to milliseconds
 	last_refreshed *= 1000;
@@ -74,12 +81,10 @@ function updateDateStr(last_refreshed) {
 	const last_refreshed_date_str = last_refreshed_date.toLocaleString('en-US', {timeZone: "America/Denver", timeZoneName: "short"}); // make sure last_refreshed is in milliseconds
 	time_string += ' at ' + last_refreshed_date_str;
 
-	// Get all last refreshed elements by class
-	const last_refreshed_elements = document.getElementsByClassName('last-refreshed-text');
 	// Update text for each last refreshed element
-	last_refreshed_elements.forEach(element => {
-		element.innerText = time_string;
-	});
+	for (let i = 0; i < last_refreshed_elements.length; i++) {
+		last_refreshed_elements[i].innerText = time_string;
+	};
 }
 
 /*
