@@ -330,10 +330,10 @@ async function getHistoricalFlights() {
 			current_time = NaN;
 		}
 		updateDateStr(current_time, refresh_text_class_name);
-		if (historical_fligts_refresh_time_text_interval_id !== 0) {
-			clearInterval(historical_fligts_refresh_time_text_interval_id);
+		if (historical_flights_refresh_time_text_interval_id !== 0) {
+			clearInterval(historical_flights_refresh_time_text_interval_id);
 		}
-		historical_fligts_refresh_time_text_interval_id = setInterval(() => updateDateStr(current_time, refresh_text_class_name), refresh_text_interval_time); // Update elapsed time every
+		historical_flights_refresh_time_text_interval_id = setInterval(() => updateDateStr(current_time, refresh_text_class_name), refresh_text_interval_time); // Update elapsed time
 
 		// Create table
 		const table = document.createElement('table');
@@ -365,9 +365,101 @@ async function getHistoricalFlights() {
 	}
 }
 
+async function getRemoteIDPackets() {
+	try {
+		// Fetch remote ID packets
+		const response = await fetch('https://cursedindustries.com/wp-json/drones/v1/remoteid-packets');
+		const data = await response.json();
+
+		// Check if HTTP response is not OK
+		if (response.status !== 200) {
+			console.log('Error: Could not fetch list of Remote ID packets. Please try again later.')
+			console.log('Response:', data)
+			return;
+		}
+
+		// Get table div and clear it
+		const table_div = document.getElementById('remoteid-packets-table');
+		table_div.innerHTML = '';
+		// Allow div to scroll
+		table_div.setAttribute('style', 'overflow-x: scroll;');
+		// table_div.setAttribute('style', 'overflow-y: scroll;'); // TODO: sticky header
+
+		
+		// Create search bar div
+		const search_bar_div = document.createElement('div');
+		// Add ID to search bar div
+		search_bar_div.setAttribute('id', 'remoteid-packets-search-bar-div');
+		// Add search bar div to table div
+		table_div.appendChild(search_bar_div);
+		// Create search bar
+		const searchBar = createSearchBar('remoteid-packets-search-bar-div', 'remoteid-packets-table');
+		// Add search bar to search bar div
+		search_bar_div.appendChild(searchBar);
+
+		// Create last refreshed paragraph
+		const last_refreshed_element = document.createElement('p');
+		// Add class to element
+		const class_name = 'remoteid-packets-last-refreshed-text'
+		last_refreshed_element.setAttribute('class', class_name);
+		// Add element to table div
+		table_div.appendChild(last_refreshed_element);
+		// Add last refreshed date to element
+		let current_time = NaN;
+		// Check for error
+		if (data.current_time !== undefined) {
+			current_time = data.current_time;
+		}
+		else {
+			console.log("Current time could not be parsed from the response. Displaying NaN as last refreshed time.");
+			current_time = NaN;
+		}
+		updateDateStr(current_time, class_name);
+		if (remoteid_packets_refresh_time_text_interval_id !== 0) {
+			clearInterval(remoteid_packets_refresh_time_text_interval_id);
+		}
+		remoteid_packets_refresh_time_text_interval_id = setInterval(() => updateDateStr(current_time, refresh_text_class_name), refresh_text_interval_time); // Update elapsed time
+
+		
+		// Create table
+		const table = document.createElement('table');
+
+		// Create table header
+		const header = table.createTHead();
+		const headerRow = header.insertRow();
+		// Create table header cells
+		headerRow.insertCell().innerHTML = 'Unique ID';
+		headerRow.insertCell().innerHTML = 'Timestamp';
+		headerRow.insertCell().innerHTML = 'Heading';
+		headerRow.insertCell().innerHTML = 'Ground Speed';
+		headerRow.insertCell().innerHTML = 'Vertical Speed';
+		headerRow.insertCell().innerHTML = 'Latitude';
+		headerRow.insertCell().innerHTML = 'Longitude';
+		// headerRow.insertCell().innerHTML = 'Altitude'; // TODO: database table is missing altitude
+
+		// Create table body
+		data.packets.forEach(packet => {
+			const row = table.insertRow();
+			row.insertCell().innerHTML = packet.unique_id; // Unique ID
+			row.insertCell().innerHTML = packet.timestamp; // Timestamp
+			row.insertCell().innerHTML = format_heading(packet.heading); // Heading
+			row.insertCell().innerHTML = format_speed(packet.gnd_speed); // Ground speed
+			row.insertCell().innerHTML = format_speed(packet.vert_speed); // Vertical speed
+			row.insertCell().innerHTML = format_latitude(packet.lat); // Latitude
+			row.insertCell().innerHTML = format_longitude(packet.lon); // Longitude
+			// row.insertCell().innerHTML = format_altitude(packet.alt); // Altitude
+		});
+		table_div.appendChild(table);
+	}
+	catch (error) {
+		console.log('Error:', error);
+	}
+}
+
 
 let active_flights_refresh_time_text_interval_id = 0;
-let historical_fligts_refresh_time_text_interval_id = 0;
+let historical_flights_refresh_time_text_interval_id = 0;
+let remoteid_packets_refresh_time_text_interval_id = 0;
 let refresh_text_interval_time = 450; // 0.45 seconds (450 milliseconds)
 console.log("Creating active flights table");
 getActiveFlights();
@@ -378,3 +470,5 @@ getHistoricalFlights();
 setInterval(getActiveFlights, 30e3);
 // Set auto-refresh interval on historical flights table to be 5 minutes (300 seconds)
 setInterval(getHistoricalFlights, 300e3);
+// Set auto-refresh interval on remote ID packets table to be 5 minutes (300 seconds)
+setInterval(getRemoteIDPackets, 300e3);
