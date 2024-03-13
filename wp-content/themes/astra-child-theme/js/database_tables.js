@@ -17,10 +17,10 @@ function format_duration(seconds) {
 	}
 }
 
-function updateDateStr(last_refreshed) {
+function updateDateStr(last_refreshed, class_name) {
 
 	// Get all last refreshed elements by class
-	const last_refreshed_elements = document.getElementsByClassName('last-refreshed-text');
+	const last_refreshed_elements = document.getElementsByClassName(class_name);
 	if (last_refreshed_elements.length === 0) {
 		console.log('No last refreshed elements found. Cannot update last refreshed time.');
 		return;
@@ -190,12 +190,13 @@ async function getActiveFlights() {
 
 		// Create last refreshed paragraph
 		const last_refreshed_element = document.createElement('p');
-		// Add ID to element
-		last_refreshed_element.setAttribute('class', 'last-refreshed-text');
+		// Add class to element
+		const class_name = 'active-flights-last-refreshed-text'
+		last_refreshed_element.setAttribute('class', class_name);
 		// Add element to table div
 		table_div.appendChild(last_refreshed_element);
 		// Add last refreshed date to element
-		updateDateStr(data.current_time);
+		updateDateStr(data.current_time, class_name);
 
 		
 		// Create table
@@ -277,18 +278,20 @@ async function getHistoricalFlights() {
 
 		// Create last refreshed text entry
 		const last_refreshed_element = document.createElement('p');
-		last_refreshed_element.setAttribute('class', 'last-refreshed-text');
-		table_div.appendChild(last_refreshed_element);
+		const class_name = 'historical-flights-last-refreshed-text';
+		last_refreshed_element.setAttribute('class', class_name);
+		table_div.appendChild(last_refreshed_element, class_name);
+		let current_time = NaN;
 		// Check for error
 		if (data.current_time !== undefined) {
-			const current_time = data.current_time;
+			current_time = data.current_time;
 		}
 		else {
 			console.log("Current time could not be parsed from the response. Displaying NaN as last refreshed time.");
-			const current_time = NaN;
+			current_time = NaN;
 		}
-		updateDateStr(data.current_time);
-		setInterval(() => updateDateStr(current_time), 3000); // Update elapsed time every 3 seconds
+		updateDateStr(current_time);
+		setInterval(() => updateDateStr(current_time), 2000); // Update elapsed time every 2 seconds
 
 		// Create table
 		const table = document.createElement('table');
