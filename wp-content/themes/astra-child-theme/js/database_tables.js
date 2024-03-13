@@ -465,6 +465,8 @@ console.log("Creating active flights table");
 getActiveFlights();
 console.log("Creating historical flights table");
 getHistoricalFlights();
+console.log("Create Remote ID packets table");
+getRemoteIDPackets();
 
 // Set auto-refresh interval on active flights table to be 30 seconds
 setInterval(getActiveFlights, 30e3);
