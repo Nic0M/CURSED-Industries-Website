@@ -400,8 +400,8 @@ async function getRemoteIDPackets() {
 		// Create last refreshed paragraph
 		const last_refreshed_element = document.createElement('p');
 		// Add class to element
-		const class_name = 'remoteid-packets-last-refreshed-text'
-		last_refreshed_element.setAttribute('class', class_name);
+		const refresh_text_class_name = 'remoteid-packets-last-refreshed-text'
+		last_refreshed_element.setAttribute('class', refresh_text_class_name);
 		// Add element to table div
 		table_div.appendChild(last_refreshed_element);
 		// Add last refreshed date to element
@@ -414,7 +414,7 @@ async function getRemoteIDPackets() {
 			console.log("Current time could not be parsed from the response. Displaying NaN as last refreshed time.");
 			current_time = NaN;
 		}
-		updateDateStr(current_time, class_name);
+		updateDateStr(current_time, refresh_text_class_name);
 		if (remoteid_packets_refresh_time_text_interval_id !== 0) {
 			clearInterval(remoteid_packets_refresh_time_text_interval_id);
 		}
