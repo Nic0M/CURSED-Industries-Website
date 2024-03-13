@@ -71,6 +71,43 @@ function active_flights_endpoint($data) {
 	return new WP_REST_Response($response, 200);
 }
 
+/*
+ * Add REST API endpoint to retrieve completed flights from database
+ */
+add_action('rest_api_init', 
+	function() { 
+		register_rest_route('drones/v1', '/historical-flights/', 
+			array(
+			'methods' => 'GET',
+			'callback' => 'historical_flights_endpoint',
+			)
+		);
+	}
+);
+function historical_flights_endpoint($data) {
+	global $dronedb;
+
+	// Select all rows from completed flights table in the database
+	$table_name = 'completed_flights';
+	$results = $dronedb->get_results("SELECT * FROM $table_name");
+
+	// Check for error
+	if ($dronedb->last_error) {
+		error_log($dronedb->last_error);
+		return new WP_REST_Response(array('error' => 'Internal Server Error'), 500);
+  	}
+
+	// Add the current time to the JSON response
+	$current_time = current_time('U');
+	$response = array(
+		'flights' => $results,
+		'current_time' => $current_time,
+	);
+
+	// Return HTTP response 200 (OK)
+	return new WP_REST_Response($response, 200);
+}
+
 function astra_child_theme_enqueue_scripts() {
     wp_enqueue_script('database_tables', get_stylesheet_directory_uri() . '/js/database_tables.js', array(), false, true);
 }
@@ -95,6 +132,7 @@ function load_completed_flight_table_function() {
 	}
 
 	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
+	echo "<div id='historical-flights-table'>Loading historical flights...</div>\n";
 
 	$refresh_time = current_time('U');
 	echo "\n<p>Current time: $refresh_time</p>";

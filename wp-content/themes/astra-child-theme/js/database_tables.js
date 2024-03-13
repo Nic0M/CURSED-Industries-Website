@@ -1,3 +1,22 @@
+function format_duration(seconds) {
+	if (seconds < 60) {
+		const word = seconds === 1 ? 'second' : 'seconds';
+		return seconds + word;
+	}
+	else if (seconds < 3600) {
+		const word = Math.floor(seconds / 60) === 1 ? 'minute' : 'minutes';
+		return Math.floor(seconds / 60) + word + format_duration(seconds % 60);
+	}
+	else if (seconds < 86400) {
+		const word = Math.floor(seconds / 3600) === 1 ? 'hour' : 'hours';
+		return Math.floor(seconds / 3600) + word + format_duration(seconds % 3600);
+	}
+	else {
+		const word = Math.floor(seconds / 86400) === 1 ? 'day' : 'days';
+		return Math.floor(seconds / 86400) + word + format_duration(seconds % 86400);
+	}
+}
+
 function updateDateStr(last_refreshed) {
 
 	// Convert last refreshed time to milliseconds
@@ -66,7 +85,7 @@ function updateDateStr(last_refreshed) {
 }
 
 /*
- * Create search bar
+ * Creates search bar and returns it
  */
 function createSearchBar(search_bar_div, table_id) {
 	// Get search bar div
@@ -95,8 +114,7 @@ function createSearchBar(search_bar_div, table_id) {
 		searchTable(search_bar_id, table_id);
 	});
 
-	// Add search bar to search bar div
-	search_div.appendChild(search_bar);
+	return search_bar;
 }
 
 /*
@@ -163,7 +181,9 @@ async function getActiveFlights() {
 		// Add search bar div to table div
 		table_div.appendChild(search_bar_div);
 		// Create search bar
-		createSearchBar('active-flights-search-bar-div', 'active-flights-table');
+		const searchBar = createSearchBar('active-flights-search-bar-div', 'active-flights-table');
+		// Add search bar to search bar div
+		search_bar_div.appendChild(searchBar);
 
 		// Create last refreshed paragraph
 		const last_refreshed_element = document.createElement('p');
@@ -217,16 +237,87 @@ async function getActiveFlights() {
 	}
 }
 
-// async function getHistoricalFlights() {
-// 	try {
-// 		const response = await fetch('https://cursedindustries.com/wp-json/drones/v1/historical-flights');
-// 		const data = await response.json();
-// 		console.log(data);
-// 	}
-// 	catch (error) {
-// 		console.log('Error:', error);
-// 	}
-// }
+async function getHistoricalFlights() {
+	try {
+		// Fetch historical flights
+		url = 'https://cursedindustries.com/wp-json/drones/v1/historical-flights';
+		const response = await fetch(
+			url,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			},
+			// No data to send
+			);
+		const data = await response.json();
+
+		// Check if HTTP response is not OK
+		if (response.status !== 200) {
+			console.log('Error:', data);
+			return;
+		}
+
+		// Get table div and clear it
+		const table_div = document.getElementById('historical-flights-table');
+		table_div.innerHTML = '';
+
+		// Create search bar div and add it to the table div
+		const search_bar_div = document.createElement('div');
+		search_bar_div.setAttribute('id', 'historical-flights-search-bar-div');
+		table_div.appendChild(search_bar_div);
+		
+		// Create search bar and add it to the search bar div
+		const searchBar = createSearchBar('historical-flights-search-bar-div', 'historical-flights-table');
+		search_bar_div.appendChild(searchBar);
+
+		// Create last refreshed text entry
+		const last_refreshed_element = document.createElement('p');
+		last_refreshed_element.setAttribute('id', 'last-refreshed-text');
+		table_div.appendChild(last_refreshed_element);
+		// Check for error
+		if (data.current_time !== undefined) {
+			const current_time = data.current_time;
+		}
+		else {
+			console.log("Current time could not be parsed from the response. Displaying NaN as last refreshed time.");
+			const current_time = NaN;
+		}
+		updateDateStr(data.current_time);
+		setInterval(() => updateDateStr(current_time), 3000); // Update elapsed time every 3 seconds
+
+		// Create table
+		const table = document.createElement('table');
+		table.setAttribute('class', 'table table-striped');
+		// Create header
+		const table_header = table.createTHead();
+		const header_row = table_header.insertRow();
+		header_row.insertCell().innerHTML = 'Unique ID';
+		header_row.insertCell().innerHTML = 'Duration';
+		header_row.insertCell().innerHTML = 'Start Time';
+		header_row.insertCell().innerHTML = 'End Time';
+		header_row.insertCell().innerHTML = 'Max Height AGL';
+		header_row.insertCell().innerHTML = 'Max Speed';
+		// Create body
+		const table_body = table.createTBody();
+		data.flights.forEach(flight => {
+			const row = table_body.insertRow();
+			row.insertCell().innerHTML = flight.unique_id;
+			row.insertCell().innerHTML = format_duration(flight.duration);
+			row.insertCell().innerHTML = flight.start_time;
+			row.insertCell().innerHTML = flight.end_time;
+			row.insertCell().innerHTML = flight.max_height_agl;
+			row.insertCell().innerHTML = flight.max_gnd_speed;
+		});
+		table_div.appendChild(table);
+	}
+	catch (error) {
+		console.log('Error:', error);
+	}
+}
 
 console.log("Creating active flights table");
 getActiveFlights();
+console.log("Creating historical flights table");
+getHistoricalFlights();
