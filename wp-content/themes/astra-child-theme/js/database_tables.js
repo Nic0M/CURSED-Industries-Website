@@ -172,7 +172,7 @@ async function getActiveFlights() {
 		const table_div = document.getElementById('active-flights-table');
 		table_div.innerHTML = '';
 		// Allow div to scroll
-		table.div.setAttribute('style', 'overflow-x: scroll;');
+		table_div.setAttribute('style', 'overflow-x: scroll;');
 		// table_div.setAttribute('style', 'overflow-y: scroll;'); // TODO: sticky header
 
 		// Check if HTTP response is not OK
@@ -271,7 +271,7 @@ async function getHistoricalFlights() {
 		const table_div = document.getElementById('historical-flights-table');
 		table_div.innerHTML = '';
 		// Allow div to scroll
-		table.div.setAttribute('style', 'overflow-x: scroll;');
+		table_div.setAttribute('style', 'overflow-x: scroll;');
 		// table_div.setAttribute('style', 'overflow-y: scroll;'); // TODO: sticky header
 		
 

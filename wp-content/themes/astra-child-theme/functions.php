@@ -118,9 +118,9 @@ function load_completed_flight_table_function() {
 	error_reporting(E_ALL);
 	ini_set('display_errors', '1');
 
-	echo "<h1>Active Flights</h1>\n";
+	echo "<h2>Active Flights</h2>\n";
 	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
-	echo "<h1>Completed Flights</h1>\n";
+	echo "<h2>Completed Flights</h2>\n";
 	echo "<div id='historical-flights-table'>Loading historical flights...</div>\n";
 }
 add_shortcode('load_completed_flight_table', 'load_completed_flight_table_function');
