@@ -164,7 +164,7 @@ function searchTable(search_bar_id, table_id) {
 	const rows = table.getElementsByTagName('tr');
 
 	// Loop through table rows and check if an element in the row contains the search value
-	for (let i = 0; i < rows.length; i++) {
+	for (let i = 1; i < rows.length; i++) { // Start at 1 to skip header row
 		// Get cells in current row
 		const cells = rows[i].getElementsByTagName('td');
 		let found = false;
@@ -445,8 +445,8 @@ async function getRemoteIDPackets() {
 			row.insertCell().innerHTML = format_heading(packet.heading); // Heading
 			row.insertCell().innerHTML = format_speed(packet.gnd_speed); // Ground speed
 			row.insertCell().innerHTML = format_speed(packet.vert_speed); // Vertical speed
-			row.insertCell().innerHTML = format_latitude(packet.lat); // Latitude
-			row.insertCell().innerHTML = format_longitude(packet.lon); // Longitude
+			row.insertCell().innerHTML = format_latitude(packet.lat / 1e7); // Latitude
+			row.insertCell().innerHTML = format_longitude(packet.lon / 1e7); // Longitude
 			// row.insertCell().innerHTML = format_altitude(packet.alt); // Altitude
 		});
 		table_div.appendChild(table);
