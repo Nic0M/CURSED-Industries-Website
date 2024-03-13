@@ -264,10 +264,12 @@ async function getActiveFlights() {
 			row.insertCell().innerHTML = format_heading(flight.heading); // Current heading
 			row.insertCell().innerHTML = flight.timestamp; // Last updated
 		});
-
-		
 		table_div.appendChild(table);
-		setInterval(() => updateDateStr(data.current_time, class_name), 3141); // Update last refreshed time every pi seconds
+
+		if (active_flights_refresh_time_text_interval_id !== 0) {
+			clearInterval(active_flights_refresh_time_text_interval_id);
+		}
+		active_flights_refresh_time_text_interval_id = setInterval(() => updateDateStr(data.current_time, class_name), 3141); // Update last refreshed time every pi seconds
 	}
 	catch (error) {
 		console.log('Error:', error);
@@ -328,7 +330,10 @@ async function getHistoricalFlights() {
 			current_time = NaN;
 		}
 		updateDateStr(current_time, refresh_text_class_name);
-		setInterval(() => updateDateStr(current_time, refresh_text_class_name), 2000); // Update elapsed time every 2 seconds
+		if (historical_fligts_refresh_time_text_interval_id !== 0) {
+			clearInterval(historical_fligts_refresh_time_text_interval_id);
+		}
+		historical_fligts_refresh_time_text_interval_id = setInterval(() => updateDateStr(current_time, refresh_text_class_name), 2000); // Update elapsed time every 2 seconds
 
 		// Create table
 		const table = document.createElement('table');
@@ -360,12 +365,15 @@ async function getHistoricalFlights() {
 	}
 }
 
+
+let active_flights_refresh_time_text_interval_id = 0;
+let historical_fligts_refresh_time_text_interval_id = 0;
 console.log("Creating active flights table");
 getActiveFlights();
 console.log("Creating historical flights table");
 getHistoricalFlights();
 
 // Set auto-refresh interval on active flights table to be 30 seconds
-setInterval(getActiveFlights, 30000);
-// Set auto-refresh interval on historical flights table to be 5 minutes
-setInterval(getHistoricalFlights, 300000);
+setInterval(getActiveFlights, 30e3);
+// Set auto-refresh interval on historical flights table to be 5 minutes (300 seconds)
+setInterval(getHistoricalFlights, 300e3);
