@@ -4,15 +4,15 @@ function format_duration(seconds) {
 		return seconds + word;
 	}
 	else if (seconds < 3600) {
-		const word = Math.floor(seconds / 60) === 1 ? ' minute' : ' minutes';
+		const word = Math.floor(seconds / 60) === 1 ? ' minute ' : ' minutes ';
 		return Math.floor(seconds / 60) + word + format_duration(seconds % 60);
 	}
 	else if (seconds < 86400) {
-		const word = Math.floor(seconds / 3600) === 1 ? ' hour' : ' hours';
+		const word = Math.floor(seconds / 3600) === 1 ? ' hour ' : ' hours ';
 		return Math.floor(seconds / 3600) + word + format_duration(seconds % 3600);
 	}
 	else {
-		const word = Math.floor(seconds / 86400) === 1 ? ' day' : ' days';
+		const word = Math.floor(seconds / 86400) === 1 ? ' day ' : ' days ';
 		return Math.floor(seconds / 86400) + word + format_duration(seconds % 86400);
 	}
 }
@@ -234,7 +234,7 @@ async function getActiveFlights() {
 
 		
 		table_div.appendChild(table);
-		setInterval(() => updateDateStr(data.current_time), 3141); // Update last refreshed time every pi seconds
+		setInterval(() => updateDateStr(data.current_time, class_name), 3141); // Update last refreshed time every pi seconds
 	}
 	catch (error) {
 		console.log('Error:', error);
@@ -278,9 +278,9 @@ async function getHistoricalFlights() {
 
 		// Create last refreshed text entry
 		const last_refreshed_element = document.createElement('p');
-		const class_name = 'historical-flights-last-refreshed-text';
-		last_refreshed_element.setAttribute('class', class_name);
-		table_div.appendChild(last_refreshed_element, class_name);
+		const refresh_text_class_name = 'historical-flights-last-refreshed-text';
+		last_refreshed_element.setAttribute('class', refresh_text_class_name);
+		table_div.appendChild(last_refreshed_element, refresh_text_class_name);
 		let current_time = NaN;
 		// Check for error
 		if (data.current_time !== undefined) {
@@ -291,7 +291,7 @@ async function getHistoricalFlights() {
 			current_time = NaN;
 		}
 		updateDateStr(current_time);
-		setInterval(() => updateDateStr(current_time), 2000); // Update elapsed time every 2 seconds
+		setInterval(() => updateDateStr(current_time, refresh_text_class_name), 2000); // Update elapsed time every 2 seconds
 
 		// Create table
 		const table = document.createElement('table');
