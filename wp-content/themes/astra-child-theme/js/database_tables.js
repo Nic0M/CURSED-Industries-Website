@@ -368,7 +368,7 @@ async function getHistoricalFlights() {
 
 let active_flights_refresh_time_text_interval_id = 0;
 let historical_fligts_refresh_time_text_interval_id = 0;
-let refresh_text_interval_time = 3000; // 3 seconds (3000 milliseconds)
+let refresh_text_interval_time = 850; // 0.85 seconds (850 milliseconds)
 console.log("Creating active flights table");
 getActiveFlights();
 console.log("Creating historical flights table");

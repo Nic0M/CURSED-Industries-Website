@@ -26,6 +26,7 @@ add_action('rest_api_init',
 			array(
 			'methods' => 'GET',
 			'callback' => 'hello_world_endpoint',
+			'permission_callback' => '__return_true',
 			)
 		);
 	}
@@ -43,6 +44,7 @@ add_action('rest_api_init',
 			array(
 			'methods' => 'GET',
 			'callback' => 'active_flights_endpoint',
+			'permission_callback' => '__return_true',
 			)
 		);
 	}
@@ -80,6 +82,7 @@ add_action('rest_api_init',
 			array(
 			'methods' => 'GET',
 			'callback' => 'historical_flights_endpoint',
+			'permission_callback' => '__return_true',
 			)
 		);
 	}
