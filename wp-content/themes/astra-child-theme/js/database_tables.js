@@ -110,6 +110,8 @@ function createSearchBar(search_bar_div, table_id) {
 	search_bar.setAttribute('id', search_bar_id);
 	// Add placeholder text to search bar
 	search_bar.setAttribute('placeholder', 'Search by unique ID, flight date, or location...');
+	// Increase width of search bar to 50%
+	search_bar.setAttribute('style', 'width: 50%;');
 	// Add class to search bar
 	search_bar.setAttribute('class', 'form-control'); // Bootstrap (CSS framework) class
 	// Add event listener to search bar
@@ -166,10 +168,12 @@ async function getActiveFlights() {
 		// Log response
 		console.log(data);
 
-		// Get table div
+		// Get table div and clear it
 		const table_div = document.getElementById('active-flights-table');
-		// Clear table div
 		table_div.innerHTML = '';
+		// Allow div to scroll
+		table.div.setAttribute('style', 'overflow-x: scroll;');
+		// table_div.setAttribute('style', 'overflow-y: scroll;'); // TODO: sticky header
 
 		// Check if HTTP response is not OK
 		if (response.status !== 200) {
@@ -266,6 +270,10 @@ async function getHistoricalFlights() {
 		// Get table div and clear it
 		const table_div = document.getElementById('historical-flights-table');
 		table_div.innerHTML = '';
+		// Allow div to scroll
+		table.div.setAttribute('style', 'overflow-x: scroll;');
+		// table_div.setAttribute('style', 'overflow-y: scroll;'); // TODO: sticky header
+		
 
 		// Create search bar div and add it to the table div
 		const search_bar_div = document.createElement('div');
@@ -290,7 +298,7 @@ async function getHistoricalFlights() {
 			console.log("Current time could not be parsed from the response. Displaying NaN as last refreshed time.");
 			current_time = NaN;
 		}
-		updateDateStr(current_time);
+		updateDateStr(current_time, refresh_text_class_name);
 		setInterval(() => updateDateStr(current_time, refresh_text_class_name), 2000); // Update elapsed time every 2 seconds
 
 		// Create table
