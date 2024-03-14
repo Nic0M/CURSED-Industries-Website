@@ -74,8 +74,12 @@ function search_table(search_bar_id, table_id, columns, case_sensitive=false) {
 						cell_value = cell_value.toLowerCase();
 					}
 					lcs = calc_lcs(search_value, cell_value);
-					if (lcs - search_value.length < 3) {
+					if (Math.abs(lcs - search_value.length) < 3) {
 						match = true;
+						console.log(`Match found: ${search_value} and ${cell_value}`);
+					}
+					else {
+						console.log(`No match: ${search_value} and ${cell_value}`);
 					}
 					break;
 				default:
@@ -83,6 +87,7 @@ function search_table(search_bar_id, table_id, columns, case_sensitive=false) {
 						cell_value = cell_value.toLowerCase();
 					}
 					if (cell_value.includes(search_value)) {
+						console.log(`Default match found: ${search_value} and ${cell_value}`);
 						match = true;
 					}
 			}
