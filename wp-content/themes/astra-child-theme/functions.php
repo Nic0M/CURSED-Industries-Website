@@ -156,7 +156,7 @@ function remoteid_packets_endpoint($data) {
 function astra_child_theme_enqueue_scripts() {
 	// wp_enqueue_script('custom-mincss', get_stylesheet_directory_uri() . '/assets/css/minified/style.min.css', array(), false, true);
 	// TODO: remove unminified CSS and JS files
-	wp_enqueue_script('custom-mincss', get_stylesheet_directory_uri() . '/assets/css/unminified/style.min.css', array(), false, true);
+	wp_enqueue_script('custom-mincss', get_stylesheet_directory_uri() . '/assets/css/unminified/style.css', array(), false, true);
     wp_enqueue_script('database_tables', get_stylesheet_directory_uri() . '/assets/js/unminified/database_tables.js', array(), false, true);
 }
 add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
