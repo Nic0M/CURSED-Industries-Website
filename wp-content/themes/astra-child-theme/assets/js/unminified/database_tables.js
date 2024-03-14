@@ -145,7 +145,8 @@ function createSearchBar(search_bar_div, table_id) {
 	search_bar.setAttribute('class', 'form-control'); // Bootstrap (CSS framework) class
 	// Add event listener to search bar
 	search_bar.addEventListener('input', function() {
-		searchTable(search_bar_id, table_id);
+		search_table(search_bar_id, table_id, 0, false); // Only search first column and make search case-insensitive
+		// searchTable(search_bar_id, table_id);
 	});
 
 	return search_bar;
