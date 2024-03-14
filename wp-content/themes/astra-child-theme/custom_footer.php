@@ -1,25 +1,23 @@
 <?php
-error_log('footer.php running');
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-error_log('footer.php passed');
 ?>
 <?php
 function create_custom_footer() {
 	?>
 	<footer class="site-footer" role="contentinfo">
-		<div class="footer-content">
-			<ul class="footer-links">
+		<div class="custom-footer-content">
+			<ul class="custom-footer-links">
 				<li class="footer-links-item"><a href="/privacy">Privacy Policy</a></li>
 				<li class="footer-links-item"><a href="/terms">Terms of Service</a></li>
 				<li class="footer-links-item"><a href="/sitemap">Sitemap</a></li>
 			</ul>
-			<div class="footer-copyright">
+			<div class="custom-footer-copyright">
 				<p>© <?php echo date("Y"); ?> CURSED</p>
 			</div>
 			<!-- Language Selector -->
-			<div class="language-selector">
+			<div class="custom-footer-language-selector">
 				<select id="language-selector">
 					<option value="en">English</option>
 					<option value="es">Español</option>
