@@ -1,42 +1,32 @@
 /*
- * Returns the edit distance between two strings
+ * Returns the longest common subsequence between two strings
  */
-function calc_edit_dist(s1, s2) {
-	if (s1 === s2) {
-		return 0;
-	}
+function calc_lcs(s1, s2) {
+	// Create a 2D array to store the length of the longest common subsequence between every substring of s1 and s2
 	const n = s1.length;
 	const m = s2.length;
+	let dp = new Array(n+1);
+	for (let i = 0; i < n+1; i++) {
+		dp[i] = new Array(m+1);
+	}
 
-	// Use dynamic programming to calculate the edit distance
-	// dp[i][j] will store the edit distance between the first i characters of s1 and the first j characters of s2
-
-	// If one of the strings is empty, the edit distance is the length of the other string
-	const dp = new Array(n+1).fill(0).map(() => new Array(m+1).fill(0));
-
-	for (let i = 0; i <= n; i++) {
-		for (let j = 0; j <= m; j++) {
-			// If the first string is empty, the edit distance is the length of the other string
-			if (i === 0) {
-				dp[i][j] = j;
-			}
-			// If the other string is empty, the edit distance is the length of the first string
-			else if (j === 0) {
-				dp[i][j] = i;
-			}
-			// If the last characters of the two strings are the same, the edit distance is the same as the edit distance between the rest of the strings
-			else if (s1[i-1] === s2[j-1]) {
-				dp[i][j] = dp[i-1][j-1];
-			}
-			// Otherwise, the edit distance is 1 plus the minimum of the edit distance between the first string and the rest of the second string,
-			// the edit distance between the second string and the rest of the first string,
-			// and the edit distance between the rest of the two strings
-			else {
-				dp[i][j] = 1 + Math.min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]);
+	// Loop through every substring of s1 and s2
+	for (let i = 0; i < n+1; i++) {
+		for (let j = 0; j < m+1; j++) {
+			// If one of the strings is empty, the length of the longest common subsequence is 0
+			if (i === 0 || j === 0) {
+				dp[i][j] = 0;
+			} else if (s1[i-1] === s2[j-1]) {
+				// If the characters match, the length of the longest common subsequence is 1 + the length of the longest common subsequence between the previous characters
+				dp[i][j] = 1 + dp[i-1][j-1];
+			} else {
+				// If the characters don't match, the length of the longest common subsequence is the maximum of the length of the longest common subsequence between the previous character of s1 and s2, and the length of the longest common subsequence between the current character of s1 and the previous character of s2
+				dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
 			}
 		}
 	}
-	// Return the edit distance
+
+	// The length of the longest common subsequence between s1 and s2 is stored in dp[n][m]
 	return dp[n][m];
 }
 
@@ -52,7 +42,12 @@ function search_table(search_bar_id, table_id, columns, case_sensitive=false) {
 		return;
 	}
 	let search_value = search_bar.value;
+	// If search bar is empty, show all rows
 	if (search_value === "") {
+		const rows = table.getElementsByTagName("tr");
+		for (let i = 1; i < rows.length; i++) {
+			rows[i].style.display = "";
+		}
 		return;
 	}
 	if (!case_sensitive) {
@@ -78,8 +73,8 @@ function search_table(search_bar_id, table_id, columns, case_sensitive=false) {
 					if (!case_sensitive) {
 						cell_value = cell_value.toLowerCase();
 					}
-					edit_dist = calc_edit_dist(search_value, cell_value);
-					if (edit_dist < 3) {
+					lcs = calc_lcs(search_value, cell_value);
+					if (lcs - search_value.length < 3) {
 						match = true;
 					}
 					break;
