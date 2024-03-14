@@ -44,4 +44,4 @@ function create_custom_footer() {
 	<?php
 
 }
-add_action('astra_footer', 'create_custom_footer');
+add_action('wp_footer', 'create_custom_footer');
