@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php
 function create_custom_footer() {
 	?>
-	<footer class="site-footer" role="contentinfo">
+	<footer class="site-footer-content" role="contentinfo">
 		<div class="footer-content">
 			<ul class="footer-links">
 				<li class="footer-links-item"><a href="/privacy">Privacy Policy</a></li>
@@ -42,4 +42,4 @@ function create_custom_footer() {
 	<?php
 
 }
-add_action('astra_footer', 'create_custom_footer');
+add_action('astra_footer_content', 'create_custom_footer');
