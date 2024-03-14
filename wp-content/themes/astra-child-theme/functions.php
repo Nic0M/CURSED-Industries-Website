@@ -1,5 +1,5 @@
 <?php
-require_once('functions.php');
+require_once('custom_footer.php');
 
 function s3_bucket_redirects() {
     if ( is_page('redirect') ) {
