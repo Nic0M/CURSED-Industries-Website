@@ -3,6 +3,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+require_once('custom_footer.php');
+
 function s3_bucket_redirects() {
     if ( is_page('redirect') ) {
         wp_redirect('https://cursed-remoteid-flight-tracks.s3.us-east-2.amazonaws.com/trackserver-demo.gpx');
