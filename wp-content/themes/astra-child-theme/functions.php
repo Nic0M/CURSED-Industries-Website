@@ -154,15 +154,14 @@ function remoteid_packets_endpoint($data) {
 }
 
 function astra_child_theme_enqueue_scripts() {
-    wp_enqueue_script('database_tables', get_stylesheet_directory_uri() . '/js/database_tables.js', array(), false, true);
+	// wp_enqueue_script('custom-mincss', get_stylesheet_directory_uri() . '/assets/css/minified/style.min.css', array(), false, true);
+	// TODO: remove unminified CSS and JS files
+	wp_enqueue_script('custom-mincss', get_stylesheet_directory_uri() . '/assets/css/unminified/style.min.css', array(), false, true);
+    wp_enqueue_script('database_tables', get_stylesheet_directory_uri() . '/assets/js/unminified/database_tables.js', array(), false, true);
 }
 add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
 
 function load_completed_flight_table_function() {
-	# Debug
-	error_reporting(E_ALL);
-	ini_set('display_errors', '1');
-
 	echo "<h2>Active Flights</h2>\n";
 	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
 	echo "<h2>Completed Flights</h2>\n";
