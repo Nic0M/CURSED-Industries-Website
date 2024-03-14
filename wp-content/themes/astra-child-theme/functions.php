@@ -3,6 +3,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+error_log("ERROR LOG SETUP");
+
 require_once('custom_footer.php');
 
 function s3_bucket_redirects() {

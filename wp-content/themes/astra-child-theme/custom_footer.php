@@ -1,4 +1,5 @@
 <?php
+error_log("RUNNING FILE");
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -9,12 +10,12 @@ function create_custom_footer() {
 	<footer class="site-footer" role="contentinfo">
 		<div class="custom-footer-content">
 			<ul class="custom-footer-links">
-				<li class="footer-links-item"><a href="/privacy">Privacy Policy</a></li>
-				<li class="footer-links-item"><a href="/terms">Terms of Service</a></li>
-				<li class="footer-links-item"><a href="/sitemap">Sitemap</a></li>
+				<li class="custom-footer-links-item"><a href="/privacy">Privacy Policy</a></li>
+				<li class="custom-footer-links-item"><a href="/terms">Terms of Service</a></li>
+				<li class="custom-footer-links-item"><a href="/sitemap">Sitemap</a></li>
 			</ul>
 			<div class="custom-footer-copyright">
-				<p>© <?php echo date("Y"); ?> CURSED</p>
+				<p>Copyright © <?php echo date("Y"); ?> CURSED</p>
 			</div>
 			<!-- Language Selector -->
 			<div class="custom-footer-language-selector">
