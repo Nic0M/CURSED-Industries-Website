@@ -7,6 +7,18 @@ function format_altitude(altitude) {
 }
 
 function format_heading(heading) {
+	if (heading < 90) {
+		return heading + '° NE';
+	}
+	else if (heading < 180) {
+		return heading + '° SE';
+	}
+	else if (heading < 270) {
+		return heading + '° SW';
+	}
+	else if (heading < 360) {
+		return heading + '° NW';
+	}
 	return heading + '°';
 }
 
@@ -474,6 +486,8 @@ getHistoricalFlights();
 console.log("Create Remote ID packets table");
 getRemoteIDPackets();
 
+// TODO: refactor code so search bar doesn't get overwritten on refresh
+// TODO: add exact search button
 // Set auto-refresh interval on active flights table to be 30 seconds
 setInterval(getActiveFlights, 30e3);
 // Set auto-refresh interval on historical flights table to be 5 minutes (300 seconds)
