@@ -38,6 +38,9 @@ function format_longitude(longitude) {
 		return longitude + '° E';
 	}
 }
+function format_timestamp(timestamp) {
+	return Date(timestamp).toLocaleString('en-US', {timeZone: "America/Denver", timeZoneName: "short"});
+}
 
 function format_duration(seconds) {
 	if (seconds < 60) {
@@ -276,7 +279,7 @@ async function getActiveFlights() {
 			row.insertCell().innerHTML = format_speed(flight.gnd_speed); // Current ground speed
 			row.insertCell().innerHTML = format_speed(flight.vert_speed); // Current vertical speed
 			row.insertCell().innerHTML = format_heading(flight.heading); // Current heading
-			row.insertCell().innerHTML = flight.timestamp; // Last updated
+			row.insertCell().innerHTML = format_timestamp(flight.timestamp); // Last updated
 		});
 		table_div.appendChild(table);
 
@@ -459,7 +462,7 @@ async function getRemoteIDPackets() {
 		data.packets.forEach(packet => {
 			const row = table.insertRow();
 			row.insertCell().innerHTML = packet.unique_id; // Unique ID
-			row.insertCell().innerHTML = packet.timestamp; // Timestamp
+			row.insertCell().innerHTML = format_timestamp(packet.timestamp); // Timestamp
 			row.insertCell().innerHTML = format_heading(packet.heading); // Heading
 			row.insertCell().innerHTML = format_speed(packet.gnd_speed); // Ground speed
 			row.insertCell().innerHTML = format_speed(packet.vert_speed); // Vertical speed
