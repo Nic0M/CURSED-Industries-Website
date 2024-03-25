@@ -327,7 +327,6 @@ async function getHistoricalFlights() {
 		table_div.innerHTML = '';
 		// Allow div to scroll
 		table_div.setAttribute('style', 'overflow-x: scroll;');
-		table_div.setAttribute('style', 'overflow-y: scroll;');
 		
 
 		// Create search bar div and add it to the table div
@@ -365,8 +364,6 @@ async function getHistoricalFlights() {
 
 		// Create header
 		const table_header = table.createTHead();
-		// Make the header sticky
-		table_header.setAttribute('style', 'position: sticky; top: 0; background-color: #00aa00; color: black;'); // Green header
 		const header_row = table_header.insertRow();
 		// Create header cells
 		header_row.insertCell().innerHTML = 'Unique ID';
@@ -413,8 +410,7 @@ async function getRemoteIDPackets() {
 		const table_div = document.getElementById('remoteid-packets-table');
 		table_div.innerHTML = '';
 		// Allow div to scroll
-		table_div.setAttribute('style', 'overflow-x: scroll;');
-		table_div.setAttribute('style', 'overflow-y: scroll;');
+		table_div.setAttribute('style', 'overflow-x: scroll; overflow-y: scroll; height: 75vh;');
 
 		
 		// Create search bar div
@@ -454,9 +450,6 @@ async function getRemoteIDPackets() {
 		
 		// Create table
 		const table = document.createElement('table');
-		// Set table height to 75% of the viewport height
-		table.setAttribute('style', 'height: 75vh;'); // 75% of viewport height
-
 
 		// Create table header
 		const header = table.createTHead();
