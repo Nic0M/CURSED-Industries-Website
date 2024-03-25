@@ -42,6 +42,10 @@ function format_longitude(longitude) {
 	}
 }
 function format_timestamp(timestamp) {
+	// Check if the timestamp is in a recognized UTC format; if not, append 'Z'
+    if (typeof timestamp === 'string' && !timestamp.endsWith('Z')) {
+        timestamp += 'Z';
+    }
 	return new Date(timestamp).toLocaleString('en-US', {timeZone: "America/Denver", timeZoneName: "short"});
 }
 
@@ -456,12 +460,11 @@ async function getRemoteIDPackets() {
 
 		// Create table header
 		const header = table.createTHead();
-		// Make the header sticky
-		header.setAttribute('style', 'position: sticky; top: 0; background-color: #00aa00; color: black;'); // Green header
 
 		// Color header row
 		const headerRow = header.insertRow();
-		// headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
+		headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
+		headerRow.setAttribute('style', 'position: sticky; top: 0;'); // Sticky header
 		// Create table header cells
 		headerRow.insertCell().innerHTML = 'Unique ID';
 		headerRow.insertCell().innerHTML = 'Timestamp';
