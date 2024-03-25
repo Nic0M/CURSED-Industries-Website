@@ -410,7 +410,7 @@ async function getRemoteIDPackets() {
 		const table_div = document.getElementById('remoteid-packets-table');
 		table_div.innerHTML = '';
 		// Allow div to scroll
-		table_div.setAttribute('style', 'overflow-x: scroll; overflow-y: scroll; height: 75vh;');
+		table_div.setAttribute('style', 'height: 75vh;');
 
 		
 		// Create search bar div
@@ -448,6 +448,10 @@ async function getRemoteIDPackets() {
 		remoteid_packets_refresh_time_text_interval_id = setInterval(() => updateDateStr(current_time, refresh_text_class_name), refresh_text_interval_time); // Update elapsed time
 
 		
+		// Create new div for table
+		const inner_table_div = document.createElement('div');
+		inner_table_div.setAttribute('style', 'overflow-x: scroll; overflow-y: scroll; height: 75vh;');
+		table_div.appendChild(inner_table_div);
 		// Create table
 		const table = document.createElement('table');
 
@@ -456,8 +460,7 @@ async function getRemoteIDPackets() {
 
 		// Color header row
 		const headerRow = header.insertRow();
-		headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
-		headerRow.setAttribute('style', 'position: sticky; top: 0;'); // Sticky header
+		headerRow.setAttribute('style', 'background-color: #00aa00; color: black; position: sticky; top: 0;'); // Background color necessary to avoid transparent header
 		// Create table header cells
 		headerRow.insertCell().innerHTML = 'Unique ID';
 		headerRow.insertCell().innerHTML = 'Timestamp';
@@ -480,7 +483,7 @@ async function getRemoteIDPackets() {
 			row.insertCell().innerHTML = format_longitude(packet.lon); // Longitude
 			row.insertCell().innerHTML = format_altitude(packet.geoAlt); // Geodetic Altitude
 		});
-		table_div.appendChild(table);
+		inner_table_div.appendChild(table);
 	}
 	catch (error) {
 		console.log('Error:', error);
