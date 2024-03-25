@@ -3,7 +3,7 @@ function format_speed(speed) {
 }
 
 function format_altitude(altitude) {
-	if (altitude === 'None') {
+	if (altitude === null) {
 		return 'Unknown';
 	}
 	return altitude + ' m';
@@ -26,21 +26,25 @@ function format_heading(heading) {
 }
 
 function format_latitude(latitude) {
-	if (latitude < 0) {
-		return Math.abs(latitude) + '° S';
-	}
-	else {
-		return latitude + '° N';
-	}
+    // Convert string to float to ensure arithmetic operations work correctly
+    latitude = parseFloat(latitude);
+    if (latitude < 0) {
+        return (-latitude).toFixed(6) + '° S';  // Convert to positive and maintain precision
+    } else {
+        return latitude.toFixed(6) + '° N';  // Maintain precision
+    }
 }
+
 function format_longitude(longitude) {
-	if (longitude < 0) {
-		return Math.abs(longitude) + '° W';
-	}
-	else {
-		return longitude + '° E';
-	}
+    // Convert string to float to ensure arithmetic operations work correctly
+    longitude = parseFloat(longitude);
+    if (longitude < 0) {
+        return (-longitude).toFixed(6) + '° W';  // Convert to positive and maintain precision
+    } else {
+        return longitude.toFixed(6) + '° E';  // Maintain precision
+    }
 }
+
 function format_timestamp(timestamp) {
 	// Check if the timestamp is in a recognized UTC format; if not, append 'Z'
     if (typeof timestamp === 'string' && !timestamp.endsWith('Z')) {
@@ -410,7 +414,7 @@ async function getRemoteIDPackets() {
 		const table_div = document.getElementById('remoteid-packets-table');
 		table_div.innerHTML = '';
 		// Allow div to scroll
-		table_div.setAttribute('style', 'height: 500px;');
+		table_div.setAttribute('style', '');
 
 		
 		// Create search bar div
@@ -450,7 +454,7 @@ async function getRemoteIDPackets() {
 		
 		// Create new div for table
 		const inner_table_div = document.createElement('div');
-		inner_table_div.setAttribute('style', 'overflow-x: scroll; overflow-y: scroll; height: 75vh;');
+		inner_table_div.setAttribute('style', 'overflow-x: scroll; overflow-y: scroll; height: 75vh; position: relative;');
 		table_div.appendChild(inner_table_div);
 		// Create table
 		const table = document.createElement('table');

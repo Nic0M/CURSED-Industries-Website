@@ -138,7 +138,7 @@ function remoteid_packets_endpoint($data) {
 
 	// Select all rows from remoteid packets table in the database
 	$table_name = 'remoteid_packets';
-	$results = $dronedb->get_results("SELECT * FROM $table_name");
+	$results = $dronedb->get_results("SELECT * FROM $table_name ORDER BY timestamp DESC LIMIT 25;");
 
 	// Check for error
 	if ($dronedb->last_error) {
