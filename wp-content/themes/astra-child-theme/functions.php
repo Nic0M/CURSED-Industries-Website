@@ -166,12 +166,16 @@ function astra_child_theme_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
 
+function load_data_table_function() {
+	echo "\n<h2>Remote ID Packets</h2>\n";
+	echo "<div id='remoteid-packets-table'>Loading Remote ID packets...</div>\n";
+}
+add_shortcode('load_data_table', 'load_data_table_function');
+
 function load_completed_flight_table_function() {
 	echo "<h2>Active Flights</h2>\n";
 	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
 	echo "<h2>Completed Flights</h2>\n";
 	echo "<div id='historical-flights-table'>Loading historical flights...</div>\n";
-	echo "<h2>Remote ID Packets</h2>\n";
-	echo "<div id='remoteid-packets-table'>Loading Remote ID packets...</div>\n";
 }
 add_shortcode('load_completed_flight_table', 'load_completed_flight_table_function');

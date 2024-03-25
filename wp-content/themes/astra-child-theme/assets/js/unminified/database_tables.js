@@ -410,7 +410,7 @@ async function getRemoteIDPackets() {
 		const table_div = document.getElementById('remoteid-packets-table');
 		table_div.innerHTML = '';
 		// Allow div to scroll
-		table_div.setAttribute('style', 'height: 75vh;');
+		table_div.setAttribute('style', 'height: 500px;');
 
 		
 		// Create search bar div
