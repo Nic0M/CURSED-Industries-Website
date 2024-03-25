@@ -450,11 +450,15 @@ async function getRemoteIDPackets() {
 		
 		// Create table
 		const table = document.createElement('table');
+		// Set table height to 75% of the viewport height
+		table.setAttribute('style', 'height: 75vh;'); // 75% of viewport height
+
 
 		// Create table header
 		const header = table.createTHead();
 		// Make the header sticky
 		header.setAttribute('style', 'position: sticky; top: 0; background-color: #00aa00; color: black;'); // Green header
+
 		// Color header row
 		const headerRow = header.insertRow();
 		// headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
@@ -479,11 +483,6 @@ async function getRemoteIDPackets() {
 			row.insertCell().innerHTML = format_latitude(packet.lat); // Latitude
 			row.insertCell().innerHTML = format_longitude(packet.lon); // Longitude
 			row.insertCell().innerHTML = format_altitude(packet.geoAlt); // Geodetic Altitude
-
-			// Set width of table cells
-			for (let i = 0; i < row.cells.length; i++) {
-				row.cells[i].setAttribute('style', 'width: 10%;');
-			}
 		});
 		table_div.appendChild(table);
 	}
