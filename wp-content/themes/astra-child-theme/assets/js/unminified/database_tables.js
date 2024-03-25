@@ -3,6 +3,9 @@ function format_speed(speed) {
 }
 
 function format_altitude(altitude) {
+	if (altitude === 'None') {
+		return 'Unknown';
+	}
 	return altitude + ' m';
 }
 
@@ -320,7 +323,7 @@ async function getHistoricalFlights() {
 		table_div.innerHTML = '';
 		// Allow div to scroll
 		table_div.setAttribute('style', 'overflow-x: scroll;');
-		// table_div.setAttribute('style', 'overflow-y: scroll;'); // TODO: sticky header
+		table_div.setAttribute('style', 'overflow-y: scroll;');
 		
 
 		// Create search bar div and add it to the table div
@@ -358,14 +361,19 @@ async function getHistoricalFlights() {
 
 		// Create header
 		const table_header = table.createTHead();
+		// Make the header sticky
+		table_header.setAttribute('style', 'position: sticky; top: 0; background-color: #00aa00; color: black;'); // Green header
 		const header_row = table_header.insertRow();
-		header_row.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
+		// Create header cells
 		header_row.insertCell().innerHTML = 'Unique ID';
 		header_row.insertCell().innerHTML = 'Duration';
 		header_row.insertCell().innerHTML = 'Start Time';
 		header_row.insertCell().innerHTML = 'End Time';
 		header_row.insertCell().innerHTML = 'Max Height AGL';
 		header_row.insertCell().innerHTML = 'Max Speed';
+		
+
+
 		// Create body
 		const table_body = table.createTBody();
 		data.flights.forEach(flight => {
@@ -402,7 +410,7 @@ async function getRemoteIDPackets() {
 		table_div.innerHTML = '';
 		// Allow div to scroll
 		table_div.setAttribute('style', 'overflow-x: scroll;');
-		// table_div.setAttribute('style', 'overflow-y: scroll;'); // TODO: sticky header
+		table_div.setAttribute('style', 'overflow-y: scroll;');
 
 		
 		// Create search bar div
@@ -445,9 +453,11 @@ async function getRemoteIDPackets() {
 
 		// Create table header
 		const header = table.createTHead();
+		// Make the header sticky
+		header.setAttribute('style', 'position: sticky; top: 0; background-color: #00aa00; color: black;'); // Green header
 		// Color header row
 		const headerRow = header.insertRow();
-		headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
+		// headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
 		// Create table header cells
 		headerRow.insertCell().innerHTML = 'Unique ID';
 		headerRow.insertCell().innerHTML = 'Timestamp';
@@ -456,7 +466,7 @@ async function getRemoteIDPackets() {
 		headerRow.insertCell().innerHTML = 'Vertical Speed';
 		headerRow.insertCell().innerHTML = 'Latitude';
 		headerRow.insertCell().innerHTML = 'Longitude';
-		// headerRow.insertCell().innerHTML = 'Altitude'; // TODO: database table is missing altitude
+		headerRow.insertCell().innerHTML = 'Altitude';
 
 		// Create table body
 		data.packets.forEach(packet => {
@@ -466,9 +476,14 @@ async function getRemoteIDPackets() {
 			row.insertCell().innerHTML = format_heading(packet.heading); // Heading
 			row.insertCell().innerHTML = format_speed(packet.gnd_speed); // Ground speed
 			row.insertCell().innerHTML = format_speed(packet.vert_speed); // Vertical speed
-			row.insertCell().innerHTML = format_latitude(packet.lat / 1e7); // Latitude
-			row.insertCell().innerHTML = format_longitude(packet.lon / 1e7); // Longitude
-			// row.insertCell().innerHTML = format_altitude(packet.alt); // Altitude
+			row.insertCell().innerHTML = format_latitude(packet.lat); // Latitude
+			row.insertCell().innerHTML = format_longitude(packet.lon); // Longitude
+			row.insertCell().innerHTML = format_altitude(packet.geoAlt); // Geodetic Altitude
+
+			// Set width of table cells
+			for (let i = 0; i < row.cells.length; i++) {
+				row.cells[i].setAttribute('style', 'width: 10%;');
+			}
 		});
 		table_div.appendChild(table);
 	}
