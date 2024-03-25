@@ -39,7 +39,7 @@ function format_longitude(longitude) {
 	}
 }
 function format_timestamp(timestamp) {
-	return Date(timestamp).toLocaleString('en-US', {timeZone: "America/Denver", timeZoneName: "short"});
+	return new Date(timestamp).toLocaleString('en-US', {timeZone: "America/Denver", timeZoneName: "short"});
 }
 
 function format_duration(seconds) {
