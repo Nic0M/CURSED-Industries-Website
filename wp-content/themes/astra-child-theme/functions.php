@@ -6,6 +6,7 @@ ini_set('display_errors', '1');
 error_log("ERROR LOG SETUP");
 
 require_once('custom_footer.php');
+require_once('healthcheck.php');
 
 function s3_bucket_redirects() {
     if ( is_page('redirect') ) {
@@ -129,6 +130,22 @@ add_action('rest_api_init',
 			'methods' => 'GET',
 			'callback' => 'remoteid_packets_endpoint',
 			'permission_callback' => '__return_true',
+			'args' => array(
+				'offset' => array(
+					'default' => 0,
+					'validate_callback' => function($param, $request, $key) {
+						return is_numeric($param) && $param >= 0;
+					},
+					'sanitize_callback' => 'absint',
+				),
+				'limit' => array(
+					'default' => 25,
+					'validate_callback' => function($param, $request, $key) {
+						return is_numeric($param) && $param <= 25;
+					},
+					'sanitize_callback' => 'absint',
+				),
+			)
 			)
 		);
 	}
@@ -136,9 +153,16 @@ add_action('rest_api_init',
 function remoteid_packets_endpoint($data) {
 	global $dronedb;
 
-	// Select all rows from remoteid packets table in the database
+	$offset = $data['offset'];
+	$limit = $data['limit'];
+
+	// Clamp the number of rows to 25 max
+	$limit = min($limit, 25);
+
+	// Select rows from remoteid packets table in the database
 	$table_name = 'remoteid_packets';
-	$results = $dronedb->get_results("SELECT * FROM $table_name ORDER BY timestamp DESC LIMIT 25;");
+	$query = $dronedb->prepare("SELECT * FROM $table_name ORDER BY timestamp DESC LIMIT %d OFFSET %d;", $limit, $offset);
+	$results = $dronedb->get_results($query);
 
 	// Check for error
 	if ($dronedb->last_error) {

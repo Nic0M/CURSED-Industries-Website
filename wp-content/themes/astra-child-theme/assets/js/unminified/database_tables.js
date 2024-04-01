@@ -397,10 +397,13 @@ async function getHistoricalFlights() {
 	}
 }
 
-async function getRemoteIDPackets() {
+let current_offset = 0;
+const limit = 25; // Limit imposed server-side
+async function getRemoteIDPackets(append_data=false) {
 	try {
-		// Fetch remote ID packets
-		const response = await fetch('https://cursedindustries.com/wp-json/drones/v1/remoteid-packets');
+		// Fetch Remote ID packets
+		const url = `https://cursedindustries.com/wp-json/drones/v1/remoteid-packets?offset=${current_offset}&limit=${limit}`;
+		const response = await fetch(url);
 		const data = await response.json();
 
 		// Check if HTTP response is not OK
