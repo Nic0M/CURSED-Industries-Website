@@ -20,7 +20,7 @@ Either stash current changes to save changes on the website
 ```shell
 git stash
 ```
-or remove all local changes on the website
+or remove all local changes on the website (REMOVES ALL UNSAVED CHANGES ON THE SERVER)
 ```shell
 git reset --hard HEAD
 ```
@@ -38,4 +38,9 @@ Updating <commit hash>
 Fast-forward
  <filename> | 8 ++++++--
  1 file changed, 6 insertions(+), 2 deletions(-)
+```
+### Restoring Stashed Changes
+If changes were stashed use
+```shell
+git stash pop
 ```
