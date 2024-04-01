@@ -115,6 +115,10 @@ function handle_healthcheck($request) {
 	}
 	// Get received packet count
 	$received_packets = $request->get_param('Received-Packets');
+	// Check if received packets is set but could be zero
+	if ($received_packets === null) {
+		return new WP_REST_Response(array('error' => 'Received-Packets is required'), 400);
+	}
 	// Check if received packets is a number
 	if (!is_numeric($received_packets)) {
 		return new WP_REST_Response(array('error' => 'Received-Packets must be a number'), 400);
