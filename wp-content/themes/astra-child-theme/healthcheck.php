@@ -17,19 +17,21 @@ function validate_jwt($request) {
 	$jwt = $request->get_header('Authorization');
 	if (!$jwt) {
 		error_log('Token required');
-		return new WP_REST_Response(array('error' => 'Token required'), 401);
+		return new WP_ERROR('jwt_required', 'Token required', array('status' => 401));
 	}
 	// Remove Bearer from the JWT
 	if (strpos($jwt, 'Bearer ') === 0) {
 		$jwt = substr($jwt, 7);
 	}
 	else {
-		return new WP_REST_Response(array('error' => 'Invalid token'), 401);
+		error_log('Authorization Header missing "Bearer " prefix')
+		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	// Split by period
 	$jwt_parts = explode('.', $jwt);
 	if (count($jwt_parts) !== 3) {
-		return new WP_REST_Response(array('error' => 'Invalid token'), 401);
+		error_log('Malformed JWT');
+		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	// Get the keys from file
 	$keys = file_get_contents('/home/bitnami/.receiver_keys/healthcheck');
@@ -58,38 +60,39 @@ function validate_jwt($request) {
 	}
 	// If no key was valid, return an error
 	if (!$valid) {
-		return new WP_REST_Response(array('error' => 'Invalid token'), 401);
+		error_log('Invalid signature');
+		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	// Decode the header
 	try {
 		$header = json_decode(base64_decode($jwt_parts[0]), true);
 	}
 	catch (Exception $e) {
-		return new WP_REST_Response(array('error' => 'Invalid token'), 401);
+		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	if (!isset($header['alg']) || $header['alg'] !== 'HS256') {
-		return new WP_REST_Response(array('error' => 'Invalid token'), 401);
+		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	if (!isset($header['typ']) || $header['typ'] !== 'JWT') {
-		return new WP_REST_Response(array('error' => 'Invalid token'), 401);
+		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	// Decode the payload
 	try {
 		$payload = json_decode(base64_decode($jwt_parts[1]), true);
 	}
 	catch (Exception $e) {
-		return new WP_REST_Response(array('error' => 'Invalid token'), 401);
+		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	// Verify expiration time is in UNIX timestamp format
 	if (!isset($payload['exp']) || !is_numeric($payload['exp'])) {
-		return new WP_REST_Response(array('error' => 'Invalid token'), 401);
+		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	// Verify expiration time is in the future
 	if ($payload['exp'] <= time()) {
-		return new WP_REST_Response(array('error' => 'Token expired'), 401);
+		return new WP_ERROR('jwt_expired', 'Token expired', array('status' => 401));
 	}
 	error_log('Token validated');
-	return false; // TODO: change back to return true
+	return true;
 }
 
 function handle_healthcheck($request) {
