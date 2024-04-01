@@ -24,7 +24,7 @@ function validate_jwt($request) {
 		$jwt = substr($jwt, 7);
 	}
 	else {
-		error_log('Authorization Header missing "Bearer " prefix')
+		error_log('Authorization Header missing "Bearer " prefix');
 		return new WP_ERROR('jwt_invalid', 'Invalid token', array('status' => 401));
 	}
 	// Split by period
