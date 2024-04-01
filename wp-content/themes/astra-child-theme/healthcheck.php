@@ -138,7 +138,7 @@ function handle_healthcheck($request) {
 	);
 	// Assuming $id, $status, and $received_packets are defined earlier and contain the values to be inserted/updated.
 	$query = $dronedb->prepare(
-    	"INSERT INTO $table_name (id, status, received_packets) VALUES (%s, %s, %d) ON DUPLICATE KEY UPDATE status = VALUES(status), received_packets = VALUES(received_packets);",
+    	"INSERT INTO $table_name (id, status, received_packets) VALUES (%s, %s, %d) ON DUPLICATE KEY UPDATE status = VALUES(status), received_packets = VALUES(received_packets), last_updated = NOW();",
     	$id,
     	$status,
     	$received_packets
