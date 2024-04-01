@@ -103,16 +103,16 @@ function handle_healthcheck($request) {
 	if (!$id) {
 		return new WP_REST_Response(array('error' => 'ID is required'), 400);
 	}
-	// Check if ID is a number
-	if (!is_numeric($id)) {
-		return new WP_REST_Response(array('error' => 'ID must be a number'), 400);
-	}
+	// Sanitize ID to prevent SQL injection
+	$id = sanitize_text_field($id);
 	// Extract status from request
 	$status = $request->get_param('Status');
 	// Check if status is set
 	if (!$status) {
 		return new WP_REST_Response(array('error' => 'Status is required'), 400);
 	}
+	// Sanitize status to prevent SQL injection
+	$status = sanitize_text_field($status);
 	// Check if status is valid ("Healthy" or "Sick")
 	if ($status !== 'Healthy' && $status !== 'Sick') {
 		return new WP_REST_Response(array('error' => 'Invalid status'), 400);
