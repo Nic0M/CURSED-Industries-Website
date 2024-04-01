@@ -88,6 +88,7 @@ function validate_jwt($request) {
 	if ($payload['exp'] <= time()) {
 		return new WP_REST_Response(array('error' => 'Token expired'), 401);
 	}
+	error_log('Token validated');
 	return true;
 }
 
