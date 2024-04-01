@@ -103,6 +103,10 @@ function handle_healthcheck($request) {
 	if (!$id) {
 		return new WP_REST_Response(array('error' => 'ID is required'), 400);
 	}
+	// Check if ID is a number
+	if (!is_numeric($id)) {
+		return new WP_REST_Response(array('error' => 'ID must be a number'), 400);
+	}
 	// Extract status from request
 	$status = $request->get_param('Status');
 	// Check if status is set
@@ -132,8 +136,13 @@ function handle_healthcheck($request) {
 		'status' => $status,
 		'received_packets' => $received_packets,
 	);
-	// Insert data into database
-	$query = $dronedb->prepare("INSERT INTO $table_name (id, status, received_packets) VALUES (%s, %s, %d) ON DUPLICATE KEY UPDATE status = VALUES(status), received_packets = VALUES(received_packets);");
+	// Assuming $id, $status, and $received_packets are defined earlier and contain the values to be inserted/updated.
+	$query = $dronedb->prepare(
+    	"INSERT INTO $table_name (id, status, received_packets) VALUES (%s, %s, %d) ON DUPLICATE KEY UPDATE status = VALUES(status), received_packets = VALUES(received_packets);",
+    	$id,
+    	$status,
+    	$received_packets
+	);
 	$result = $dronedb->query($query);
 	// Check for error
 	if ($dronedb->last_error) {
