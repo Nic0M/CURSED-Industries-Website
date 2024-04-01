@@ -133,7 +133,7 @@ function handle_healthcheck($request) {
 		'received_packets' => $received_packets,
 	);
 	// Insert data into database
-	$query = $dronedb->prepare("INSERT INTO $table_name (id, status, received_packets) VALUES (%s, %s, %d);", $data['id'], $data['status'], $data['received_packets']);
+	$query = $dronedb->prepare("INSERT INTO $table_name (id, status, received_packets) VALUES (%s, %s, %d) ON DUPLICATE KEY UPDATE status = VALUES(status), received_packets = VALUES(received_packets);");
 	$result = $dronedb->query($query);
 	// Check for error
 	if ($dronedb->last_error) {
