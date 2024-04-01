@@ -114,10 +114,10 @@ function handle_healthcheck($request) {
 		return new WP_REST_Response(array('error' => 'Invalid status'), 400);
 	}
 	// Get received packet count
-	$received_packets = $request->get_param('Received Packets');
-	// Check if received packets is set
-	if (!$received_packets) {
-		return new WP_REST_Response(array('error' => 'Received Packets is required'), 400);
+	$received_packets = $request->get_param('Received-Packets');
+	// Check if received packets is a number
+	if (!is_numeric($received_packets)) {
+		return new WP_REST_Response(array('error' => 'Received-Packets must be a number'), 400);
 	}
 	// Store values in database
 	global $dronedb;
