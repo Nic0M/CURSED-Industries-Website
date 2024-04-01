@@ -195,9 +195,13 @@ function load_data_table_function() {
 add_shortcode('load_data_table', 'load_data_table_function');
 
 function load_completed_flight_table_function() {
-	echo "<h2>Active Flights</h2>\n";
-	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
 	echo "<h2>Completed Flights</h2>\n";
 	echo "<div id='historical-flights-table'>Loading historical flights...</div>\n";
 }
 add_shortcode('load_completed_flight_table', 'load_completed_flight_table_function');
+
+function load_active_flight_table_function() {
+	echo "<h2>Active Flights</h2>\n";
+	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
+}
+add_shortcode('load_active_flight_table', 'load_active_flight_table_function');
