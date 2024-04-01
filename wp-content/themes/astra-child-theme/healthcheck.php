@@ -89,10 +89,11 @@ function validate_jwt($request) {
 		return new WP_REST_Response(array('error' => 'Token expired'), 401);
 	}
 	error_log('Token validated');
-	return true;
+	return false; // TODO: change back to return true
 }
 
 function handle_healthcheck($request) {
+	error_log('Handling healthcheck');
 	// Extract ID from request
 	$id = $request->get_param('ID');
 	// Check if ID is set
