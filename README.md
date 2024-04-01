@@ -1,10 +1,12 @@
 ## Website URL
 [https://cursedindustries.com](https://cursedindustries.com)
 ## Updating the Website
+### Connecting to Website Server
 Make sure you have an SSH key setup
 ```shell
 ssh bitnami@<ip_address>
 ```
+### Getting to Git Repository
 Change into the git repository
 ```shell
 cd /bitnami/wordpress
@@ -13,6 +15,7 @@ Checkout master branch
 ```shell
 git checkout master
 ```
+### Save or Delete Old Changes on Website
 Either stash current changes to save changes on the website
 ```shell
 git stash
@@ -21,6 +24,7 @@ or remove all local changes on the website
 ```shell
 git reset --hard HEAD
 ```
+### Get New Changes
 Pull changes from this repository
 ```shell
 git pull origin master
