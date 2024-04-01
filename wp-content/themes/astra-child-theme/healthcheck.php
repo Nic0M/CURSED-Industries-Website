@@ -16,6 +16,7 @@ add_action(
 function validate_jwt($request) {
 	$jwt = $request->get_header('Authorization');
 	if (!$jwt) {
+		error_log('Token required');
 		return new WP_REST_Response(array('error' => 'Token required'), 401);
 	}
 	// Remove Bearer from the JWT
@@ -115,7 +116,7 @@ function handle_healthcheck($request) {
 	}
 	// Store values in database
 	global $dronedb;
-	$table_name = 'healthcheck';
+	$table_name = 'healthchecks';
 	// Prepare request
 	$data = array(
 		'id' => $id,

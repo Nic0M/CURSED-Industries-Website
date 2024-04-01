@@ -1,5 +1,4 @@
 <?php
-error_log("RUNNING FILE");
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
