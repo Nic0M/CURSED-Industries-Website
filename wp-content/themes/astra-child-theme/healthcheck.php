@@ -152,24 +152,3 @@ function handle_healthcheck($request) {
 	// Return success response
 	return new WP_REST_Response(array('success' => 'Healthcheck recorded'), 200);
 }
-
-if (!wp_next_scheduled('update_healthcheck_status')) {
-    wp_schedule_event(time(), 'every_minute', 'update_healthcheck_status');
-}
-
-add_action('update_healthcheck_status', 'update_healthcheck_status_callback');
-
-function update_healthcheck_status_callback() {
-    global $dronedb;
-    $dronedb->query("UPDATE `healthchecks` SET `Status` = 'Unhealthy' WHERE `updated_at` <= NOW() - INTERVAL 5 MINUTE" );
-}
-
-// Ensure that the 'every_minute' schedule exists
-add_filter('cron_schedules', 'add_every_minute_cron_schedule');
-function add_every_minute_cron_schedule($schedules) {
-    $schedules['every_minute'] = array(
-        'interval' => 60,
-        'display' => __('Every Minute')
-    );
-    return $schedules;
-}
