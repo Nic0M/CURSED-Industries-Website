@@ -501,7 +501,7 @@ async function getRemoteIDPackets(append_data=false) {
 async function getRaspberryPiStatus() {
 	try {
 		// Fetch Raspberry Pi statuses
-		const url = await fetch('https://cursedindustries.com/wp-json/healthcheck/v1/healthchecks');
+		const url = await fetch('https://cursedindustries.com/wp-json/healthcheck/v1/get_healthchecks');
 		const response = await fetch(url);
 		const data = await response.json();
 
@@ -555,6 +555,23 @@ async function getRaspberryPiStatus() {
 		// Add class to element
 		const refresh_text_class_name = 'healthchecks-last-refreshed-text'
 		last_refreshed_element.setAttribute('class', refresh_text_class_name);
+		// Add element to table div
+		table_div.appendChild(last_refreshed_element);
+		// Add last refreshed date to element
+		let current_time = NaN;
+		// Check for error
+		if (data.current_time !== undefined) {
+			current_time = data.current_time;
+		}
+		else {
+			console.log("Current time could not be parsed from the response. Displaying NaN as last refreshed time.");
+			current_time = NaN;
+		}
+		updateDateStr(current_time, refresh_text_class_name);
+		if (healthchecks_refresh_time_text_interval_id !== 0) {
+			clearInterval(healthchecks_refresh_time_text_interval_id);
+		}
+		healthchecks_refresh_time_text_interval_id = setInterval(() => updateDateStr(current_time, refresh_text_class_name), refresh_text_interval_time);
 		
 		
 		// Add elements to div
@@ -573,6 +590,7 @@ async function getRaspberryPiStatus() {
 let active_flights_refresh_time_text_interval_id = 0;
 let historical_flights_refresh_time_text_interval_id = 0;
 let remoteid_packets_refresh_time_text_interval_id = 0;
+let raspberry_pi_status_refresh_time_text_interval_id = 0;
 let refresh_text_interval_time = 450; // 0.45 seconds (450 milliseconds)
 console.log("Creating active flights table");
 getActiveFlights();
