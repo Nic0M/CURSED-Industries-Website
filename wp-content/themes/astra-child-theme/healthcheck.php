@@ -174,7 +174,7 @@ function get_healthchecks($request) {
 	$results = $dronedb->get_results($query);
 	if ($dronedb->last_error) {
 		error_log($dronedb->last_error);
-		return new WP_REST_Response(array('error' => 'Internal Server Error'), 500);
+		return new WP_REST_Response(array('error' => 'Internal Server Error', 'msg' => $dronedb->last_error), 500);
 	}
 	$response = array(
 		'healthchecks' => $results,
