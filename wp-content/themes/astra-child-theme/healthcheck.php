@@ -166,7 +166,7 @@ add_action(
 			)
 		);
 	}
-)
+);
 function get_healthchecks($request) {
 	global $dronedb;
 	$table_name = 'healthchecks';
