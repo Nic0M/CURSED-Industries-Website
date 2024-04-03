@@ -158,7 +158,7 @@ add_action(
 	function() {
 		register_rest_route(
 			'healthcheck/v1',
-			'get_healthchecks',
+			'/get_healthchecks/',
 			array(
 				'methods' => 'GET',
 				'callback' => 'get_healthchecks',
