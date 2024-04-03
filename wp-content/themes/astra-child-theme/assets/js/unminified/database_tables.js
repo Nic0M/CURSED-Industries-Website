@@ -497,6 +497,78 @@ async function getRemoteIDPackets(append_data=false) {
 	}
 }
 
+// Rasbperry Pi Status Table
+async function getRaspberryPiStatus() {
+	try {
+		// Fetch Raspberry Pi statuses
+		const url = await fetch('https://cursedindustries.com/wp-json/healthcheck/v1/healthchecks');
+		const response = await fetch(url);
+		const data = await response.json();
+
+		// Check for error
+		if (response.status !== 200) {
+			console.log('Error:', data);
+			return;
+		}
+
+		// Get table div and clear it
+		const table_div = document.getElementById('healthchecks-table');
+		table_div.innerHTML = '';
+		
+		// Get healthchecks from data
+		// Check if it exists first
+		if (data.healthchecks === undefined) {
+			console.log('No healthchecks found in response.');
+			return;
+		}
+		const healthchecks = data.healthchecks;
+
+		// Create table
+		const table = document.createElement('table');
+		table.setAttribute('class', 'healthchecks-table');
+		// Allow scrolling
+		table.setAttribute('style', 'overflow-x: scroll;');
+
+		// Create header
+		const table_header = table.createTHead();
+		const header_row = table_header.insertRow();
+		// Create header cells
+		header_row.insertCell().innerHTML = 'Receiver ID';
+		header_row.insertCell().innerHTML = 'Status';
+		header_row.insertCell().innerHTML = 'Last Updated';
+		header_row.insertCell().innerHTML = 'Received Packets';
+
+		// Create body
+		const table_body = table.createTBody();
+		healthchecks.forEach(healthcheck => {
+			const row = table_body.insertRow();
+			row.insertCell().innerHTML = healthcheck.id;
+			row.insertCell().innerHTML = healthcheck.status;
+			row.insertCell().innerHTML = healthcheck.updated_at;
+			row.insertCell().innerHTML = healthcheck.received_packets;
+		});
+
+		
+
+		// Create last refreshed paragraph
+		const last_refreshed_element = document.createElement('p');
+		// Add class to element
+		const refresh_text_class_name = 'healthchecks-last-refreshed-text'
+		last_refreshed_element.setAttribute('class', refresh_text_class_name);
+		
+		
+		// Add elements to div
+		table_div.appendChild(last_refreshed_element);
+		table_div.appendChild(table);
+
+
+
+	}
+	catch (error) {
+		console.log('Error:', error);
+	}
+}
+
 
 let active_flights_refresh_time_text_interval_id = 0;
 let historical_flights_refresh_time_text_interval_id = 0;
@@ -508,6 +580,8 @@ console.log("Creating historical flights table");
 getHistoricalFlights();
 console.log("Create Remote ID packets table");
 getRemoteIDPackets();
+console.log("Create Raspberry Pi status table");
+getRaspberryPiStatus();
 
 // TODO: refactor code so search bar doesn't get overwritten on refresh
 // TODO: add exact search button
@@ -517,3 +591,5 @@ setInterval(getActiveFlights, 30e3);
 setInterval(getHistoricalFlights, 300e3);
 // Set auto-refresh interval on remote ID packets table to be 5 minutes (300 seconds)
 setInterval(getRemoteIDPackets, 300e3);
+// Set auto-refresh interval on Raspberry Pi status table to be 5 minutes (300 seconds)
+setInterval(getRaspberryPiStatus, 300e3);

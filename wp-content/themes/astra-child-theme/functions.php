@@ -205,3 +205,9 @@ function load_active_flight_table_function() {
 	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
 }
 add_shortcode('load_active_flight_table', 'load_active_flight_table_function');
+
+function load_healthcheck_table_function() {
+	echo "<h2>Receiver Status</h2>\n";
+	echo "<div id='healthchecks-table'>Getting receiver statuses...</div>\n";
+}
+add_shortcode('load_healthcheck_table', 'load_healthcheck_table_function');

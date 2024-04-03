@@ -152,3 +152,32 @@ function handle_healthcheck($request) {
 	// Return success response
 	return new WP_REST_Response(array('success' => 'Healthcheck recorded'), 200);
 }
+
+add_action(
+	'rest_api_init',
+	function() {
+		register_rest_route(
+			'healthcheck/v1',
+			'healthchecks',
+			array(
+				'methods' => 'GET',
+				'callback' => 'get_healthchecks',
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+)
+function get_healthchecks($request) {
+	global $dronedb;
+	$table_name = 'healthchecks';
+	$query = $dronedb->prepare("SELECT `id`, `status`, `received_packets` FROM %s;", $table_name);
+	$results = $dronedb->get_results($query);
+	if ($dronedb->last_error) {
+		error_log($dronedb->last_error);
+		return new WP_REST_Response(array('error' => 'Internal Server Error'), 500);
+	}
+	$response = array(
+		'healthchecks' => $results,
+	);
+	return new WP_REST_Response($response, 200);
+}
