@@ -170,7 +170,7 @@ add_action(
 function get_healthchecks($request) {
 	global $dronedb;
 	$table_name = 'healthchecks';
-	$query = $dronedb->prepare("SELECT `id`, `status`, `received_packets` FROM %s;", $table_name);
+	$query = $dronedb->prepare("SELECT `id`, `status`, `received_packets`, `updated_at` FROM %s;", $table_name);
 	$results = $dronedb->get_results($query);
 	if ($dronedb->last_error) {
 		error_log($dronedb->last_error);
@@ -178,6 +178,7 @@ function get_healthchecks($request) {
 	}
 	$response = array(
 		'healthchecks' => $results,
+		'current_time' => current_time('U'),
 	);
 	return new WP_REST_Response($response, 200);
 }
