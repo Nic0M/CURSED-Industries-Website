@@ -501,7 +501,7 @@ async function getRemoteIDPackets(append_data=false) {
 async function getRaspberryPiStatus() {
 	try {
 		// Fetch Raspberry Pi statuses
-		const url = await fetch('https://cursedindustries.com/wp-json/healthcheck/v1/get_healthchecks');
+		const url = 'https://cursedindustries.com/wp-json/healthcheck/v1/get_healthchecks';
 		const response = await fetch(url);
 		const data = await response.json();
 
