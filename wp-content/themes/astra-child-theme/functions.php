@@ -183,8 +183,9 @@ function astra_child_theme_enqueue_scripts() {
 	// wp_enqueue_script('custom-mincss', get_stylesheet_directory_uri() . '/assets/css/minified/style.min.css', array(), false, true);
 	// TODO: remove unminified CSS and JS files
 	wp_enqueue_style('custom-min-css', get_stylesheet_directory_uri() . '/assets/css/unminified/custom_footer.css', array(), null, 'all');
-	wp_enqueue_script('edit_dist_seach', get_stylesheet_directory_uri() . '/assets/js/unminified/custom-search.js', array(), null, true);
-    wp_enqueue_script('database_tables', get_stylesheet_directory_uri() . '/assets/js/unminified/database_tables.js', array(), null, true);
+	wp_enqueue_script('custom-min-js', get_stylesheet_directory_uri() . '/assets/js/minified/main.min.js', array(), null, true);
+	// wp_enqueue_script('edit_dist_seach', get_stylesheet_directory_uri() . '/assets/js/unminified/custom-search.js', array(), null, true);
+    // wp_enqueue_script('database_tables', get_stylesheet_directory_uri() . '/assets/js/unminified/database_tables.js', array(), null, true);
 }
 add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
 
