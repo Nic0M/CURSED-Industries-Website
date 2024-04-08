@@ -259,7 +259,7 @@ function get_flight_packets($data) {
 	$src_addr = $data['src_addr'];
 	$start_time = $data['start_time'];
 	$src_addr = "MAC-60:60:1F:5A:48:07";
-	$start_time = "2024-03-26 2007:00:24"
+	$start_time = "2024-03-26 2007:00:24";
 
 	// Select the flight from the database
 	$completed_flights_table_name = 'completed_flights';
