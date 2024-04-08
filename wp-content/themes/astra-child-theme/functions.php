@@ -264,10 +264,14 @@ function get_flight_packets($data) {
 	// Select the flight from the database
 	$completed_flights_table_name = 'completed_flights';
 	$remoteid_packets_table_name = 'remoteid_packets';
-	$query = $dronedb->prepare('SELECT rp.unique_id, rp.timestamp, rp.heading, rp.gnd_speed, rp.vert_speed, rp.lat, rp.lon, rp.height FROM completed_flights cf, remoteid_packets rp WHERE rp.src_addr = cf.src_addr AND rp.src_addr = ? AND rp.timestamp >= ? AND rp.timestamp <= (SELECT end_time FROM completed_flights WHERE src_addr = ? AND start_time = ?)');
-
-	$query->execute([$src_addr, $start_time, $src_addr, $start_time]);
-	$results = $query->fetchAll();
+	$query = $dronedb->prepare(
+		'Select rp.unique_id,rp.timestamp,rp.heading,rp.gnd_speed,rp.vert_speed,rp.lat,rp.lon,rp.height From %s cf, %s rp where rp.src_addr=cf.src_addr and rp.src_addr="%s" and rp.timestamp >= "%s" and rp.timestamp <= (Select end_time From completed_flights Where src_addr="%s" and start_time="%s");',
+		$src_addr,
+		$start_time,
+		$src_addr,
+		$start_time,
+	);
+	$results = $query->get_results($query);
 
 	// Check for error
 	if ($dronedb->last_error) {
