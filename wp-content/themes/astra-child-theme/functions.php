@@ -271,7 +271,7 @@ function get_flight_packets($data) {
 		$src_addr,
 		$start_time,
 	);
-	$results = $query->get_results($query);
+	$results = $dronedb->get_results($query);
 
 	// Check for error
 	if ($dronedb->last_error) {
