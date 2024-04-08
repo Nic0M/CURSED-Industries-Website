@@ -386,7 +386,12 @@ async function getHistoricalFlights() {
 		const table_body = table.createTBody();
 		data.flights.forEach(flight => {
 			const row = table_body.insertRow();
-			row.insertCell().innerHTML = flight.unique_id;
+			unique_id_cell = row.insertCell();
+			unique_id_inner_hmtl = document.createElement('a');
+			unique_id_inner_hmtl.setAttribute('href', 'https://google.com/search?q=' + flight.src_addr);
+			// Set hyperlink text
+			unique_id_inner_html.innerText = flight.unique_id;
+			unique_id_cell.innerHTML = unique_id_inner_html;
 			row.insertCell().innerHTML = format_duration(flight.duration);
 			row.insertCell().innerHTML = flight.start_time;
 			row.insertCell().innerHTML = flight.end_time;
