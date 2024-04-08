@@ -16,16 +16,3 @@
     max-width: 100%;
     padding: 0;
 }
-
-/* Target images within the main content area */
-.ast-container .entry-content img,
-.ast-container .wp-block-image img {
-    width: 100%;
-    height: auto;
-}
-
-/* Ensure images are not stretched beyond their original size */
-img {
-    max-width: 100%;
-    height: auto;
-}

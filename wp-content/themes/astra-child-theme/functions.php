@@ -188,6 +188,98 @@ function remoteid_packets_endpoint($data) {
 	return new WP_REST_Response($response, 200);
 }
 
+add_action(
+	'rest_api_init', 
+	function() { 
+		register_rest_route('drones/v1', '/get_flight/', 
+			array(
+			'methods' => 'GET',
+			'callback' => 'get_flight_endpoint',
+			'permission_callback' => '__return_true',
+			)
+		);
+	}
+);
+function get_flight_endpoint($data) {
+	global $dronedb;
+
+	// Get the flight ID from the request
+	$src_addr = $data['src_addr'];
+	$flight_num = $data['flight_num'];
+
+	// Select the flight from the database
+	$table_name = 'remoteid_packets';
+	// $query = $dronedb->prepare("SELECT unique_id, lat, lon, gnd_speed, heading FROM $table_name WHERE src_addr = %s AND flight_num = %d;", $src_addr, $flight_num);
+	$query = $dronedb->prepare("SELECT unique_id, lat, lon, gnd_speed, heading FROM $table_name WHERE src_addr = %s", $src_addr);
+
+	$results = $dronedb->get_results($query);
+
+	// Check for error
+	if ($dronedb->last_error) {
+		error_log($dronedb->last_error);
+		return new WP_REST_Response(array('error' => 'Internal Server Error'), 500);
+  	}
+
+	// Return the flight data
+	$response = array(
+		// Latitude list
+		'lat' => array_map(function($row) { return $row->lat; }, $results),
+		// Longitude list
+		'lon' => array_map(function($row) { return $row->lon; }, $results),
+		// Get latest speed
+		'speed' => end($results)->gnd_speed,
+		// Get latest heading
+		'heading' => end($results)->heading,
+		// Get unique id
+		'unique_id' => end($results)->unique_id,
+		// Get the current time
+		'current_time' => current_time('U'),
+	);
+
+	// Return HTTP response 200 (OK)
+	return new WP_REST_Response($response, 200);
+}
+
+// add_action(
+// 	'rest_api_init', 
+// 	function() { 
+// 		register_rest_route('drones/v1', '/get_flight_packets', 
+// 			array(
+// 			'methods' => 'GET',
+// 			'callback' => 'get_flight_packets',
+// 			'permission_callback' => '__return_true',
+// 			)
+// 		);
+// 	}
+// );
+// function get_flight_packets($data) {
+// 	global $dronedb;
+
+// 	// Get the flight ID from the request
+// 	$src_addr = $data['src_addr'];
+// 	$timestamp = $data['timestamp'];
+
+// 	// Select the flight from the database
+// 	$completed_flights_table_name = 'remoteid_packets';
+// 	$remoteid_packets_table_name = 'remoteid_packets';
+// 	$query = $dronedb->prepare("SELECT completed_flights,  FROM $table_name WHERE src_addr = %s AND flight_num = %d;", $src_addr, $flight_num);
+// 	$results = $dronedb->get_results($query);
+
+// 	// Check for error
+// 	if ($dronedb->last_error) {
+// 		error_log($dronedb->last_error);
+// 		return new WP_REST_Response(array('error' => 'Internal Server Error'), 500);
+//   	}
+
+// 	// Return the flight data
+// 	$response = array(
+// 		'packets' => $results,
+// 	);
+
+// 	// Return HTTP response 200 (OK)
+// 	return new WP_REST_Response($response, 200);
+// }
+
 function astra_child_theme_enqueue_scripts() {
 	// wp_enqueue_script('custom-mincss', get_stylesheet_directory_uri() . '/assets/css/minified/style.min.css', array(), false, true);
 	// TODO: remove unminified CSS and JS files
