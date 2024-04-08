@@ -3,10 +3,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-// Favicon
-<link rel="icon" href="https://cursedindustries.com/images/favicon.ico">
-
-
 // Add actions to hook on creation of header
 add_action('wp_head', 'add_leaflet');
 
