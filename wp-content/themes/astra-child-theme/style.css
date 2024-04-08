@@ -4,3 +4,15 @@
  * Author: CURSED
  * Version: 0.3.1
  */
+
+ /* Make the main content full width */
+.ast-container {
+    max-width: 100%;
+    padding: 0;
+}
+
+/* Adjust the content area if sidebars */
+.ast-page-builder-template .content-area, .ast-page-builder-template .site-content > .ast-container {
+    max-width: 100%;
+    padding: 0;
+}
