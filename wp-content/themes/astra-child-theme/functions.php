@@ -241,56 +241,57 @@ function get_flight_endpoint($data) {
 }
 
 add_action(
-	'rest_api_init', 
-	function() { 
-		register_rest_route('drones/v1', '/get_flight_packets/', 
-			array(
-			'methods' => 'GET',
-			'callback' => 'get_flight_packets',
-			'permission_callback' => '__return_true',
-			)
-		);
-	}
+    'rest_api_init', 
+    function() { 
+        register_rest_route('drones/v1', '/get_flight_packets/', 
+            array(
+                'methods' => 'GET',
+                'callback' => 'get_flight_packets',
+                'permission_callback' => '__return_true',
+            )
+        );
+    }
 );
+
 function get_flight_packets($data) {
-	global $dronedb;
+    global $dronedb;
 
-	// Get the flight ID from the request
-	$src_addr = $data['src_addr'];
-	$start_time = $data['start_time'];
-	$src_addr = "MAC-60:60:1F:5A:48:07";
-	$start_time = "2024-03-26 07:00:24";
+    // Get the flight ID and start time from the request
+    $src_addr = isset($data['src_addr']) ? $data['src_addr'] : "MAC-60:60:1F:5A:48:07";
+    $start_time = isset($data['start_time']) ? $data['start_time'] : "2024-03-26 07:00:24";
 
-	// Select the flight from the database
-	$completed_flights_table_name = 'completed_flights';
-	$remoteid_packets_table_name = 'remoteid_packets';
-	$query_prepare_str = 'Select rp.unique_id,rp.timestamp,rp.heading,rp.gnd_speed,rp.vert_speed,rp.lat,rp.lon,rp.height From %s cf, %s rp where rp.src_addr=cf.src_addr and rp.src_addr="%s" and rp.timestamp >= "%s" and rp.timestamp <= (Select end_time From completed_flights Where src_addr="%s" and start_time="%s");';
-	$query = $dronedb->prepare(
-		$query_prepare_str,
-		$src_addr,
-		$start_time,
-		$src_addr,
-		$start_time,
-	);
-	$results = $dronedb->get_results($query);
+    // Ensure the necessary parameters are provided
+    if (!$src_addr || !$start_time) {
+        return new WP_REST_Response(array('error' => 'Missing required parameters'), 400);
+    }
 
-	// Check for error
-	if ($dronedb->last_error) {
-		error_log($dronedb->last_error);
-		return new WP_REST_Response(array('error' => $dronedb->last_error));
-		return new WP_REST_Response(array('error' => 'Internal Server Error'), 500);
-  	}
+    // Select the flight from the database
+    $completed_flights_table_name = 'completed_flights';
+    $remoteid_packets_table_name = 'remoteid_packets';
+    $query = $dronedb->prepare(
+        "SELECT rp.unique_id, rp.timestamp, rp.heading, rp.gnd_speed, rp.vert_speed, rp.lat, rp.lon, rp.height 
+         FROM $completed_flights_table_name cf, $remoteid_packets_table_name rp 
+         WHERE rp.src_addr = cf.src_addr 
+           AND rp.src_addr = %s 
+           AND rp.timestamp >= %s 
+           AND rp.timestamp <= (SELECT end_time FROM $completed_flights_table_name WHERE src_addr = %s AND start_time = %s)",
+        $src_addr, $start_time, $src_addr, $start_time
+    );
+    $results = $dronedb->get_results($query);
 
-	// Return the flight data
-	$response = array(
-		'packets' => $results,
-		'query_prepare' => $query_prepare_str,
-		'query' => $query,
-		'current_time' => current_time('U'),
-	);
+    // Check for error
+    if ($dronedb->last_error) {
+        return new WP_REST_Response(array('error' => $dronedb->last_error), 500);
+    }
 
-	// Return HTTP response 200 (OK)
-	return new WP_REST_Response($response, 200);
+    // Return the flight data
+    $response = array(
+        'packets' => $results,
+        'current_time' => current_time('U'),
+    );
+
+    // Return HTTP response 200 (OK)
+    return new WP_REST_Response($response, 200);
 }
 
 function astra_child_theme_enqueue_scripts() {
