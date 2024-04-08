@@ -284,6 +284,7 @@ function get_flight_packets($data) {
 	// Return the flight data
 	$response = array(
 		'packets' => $results,
+		'query_prepare' => $query_prepare_str,
 		'query' => $query,
 		'current_time' => current_time('U'),
 	);
