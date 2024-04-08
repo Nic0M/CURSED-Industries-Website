@@ -1,4 +1,5 @@
 goog.module('drone_maps');
+goog.require('leaflet_plugins.rotated_marker')
 
 // Global live map variable
 var live_map = L.map(
@@ -43,10 +44,18 @@ var cyan_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/image
 var lilac_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_lilac.png'});
 var pink_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_pink.png'});
 
-L.marker([40.03, -105.1], {icon: red_icon}).addTo(live_map).bindPopup("I'm a red drone!");
-L.marker([40.04, -105.1], {icon: orange_icon}).addTo(live_map).bindPopup("I'm an orange drone!");
-L.marker([40.05, -105.1], {icon: yellow_icon}).addTo(live_map).bindPopup("I'm a yellow drone!");
-L.marker([40.06, -105.1], {icon: green_icon}).addTo(live_map).bindPopup("I'm a green drone!");
-L.marker([40.07, -105.1], {icon: cyan_icon}).addTo(live_map).bindPopup("I'm a cyan drone!");
-L.marker([40.08, -105.1], {icon: lilac_icon}).addTo(live_map).bindPopup("I'm a lilac drone!");
-L.marker([40.09, -105.1], {icon: pink_icon}).addTo(live_map).bindPopup("I'm a pink drone!");
+red_marker = L.marker([40.03, -105.1], {icon: red_icon}).addTo(live_map).bindPopup("I'm a red drone!");
+orange_marker = L.marker([40.04, -105.1], {icon: orange_icon}).addTo(live_map).bindPopup("I'm an orange drone!");
+yellow_marker = L.marker([40.05, -105.1], {icon: yellow_icon}).addTo(live_map).bindPopup("I'm a yellow drone!");
+green_marker = L.marker([40.06, -105.1], {icon: green_icon}).addTo(live_map).bindPopup("I'm a green drone!");
+cyan_marker = L.marker([40.07, -105.1], {icon: cyan_icon}).addTo(live_map).bindPopup("I'm a cyan drone!");
+lilac_marker = L.marker([40.08, -105.1], {icon: lilac_icon}).addTo(live_map).bindPopup("I'm a lilac drone!");
+purple_marker = L.marker([40.09, -105.1], {icon: pink_icon}).addTo(live_map).bindPopup("I'm a pink drone!");
+
+red_marker.setRotationAngle(45);
+orange_marker.setRotationAngle(90);
+yellow_marker.setRotationAngle(135);
+green_marker.setRotationAngle(180);
+cyan_marker.setRotationAngle(225);
+lilac_marker.setRotationAngle(270);
+purple_marker.setRotationAngle(315);
