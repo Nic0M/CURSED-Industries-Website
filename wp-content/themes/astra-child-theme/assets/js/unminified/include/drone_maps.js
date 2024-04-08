@@ -25,7 +25,7 @@ L.tileLayer(
 // Lilac: #5271ff
 // Pink: #ff66c4
 
-var DroneIconClass = L.icon.extend(
+var DroneIconClass = L.Icon.extend(
 	{
 		options: {
 			iconSize: [100, 100],
