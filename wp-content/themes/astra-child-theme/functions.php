@@ -263,13 +263,7 @@ function get_flight_packets($data) {
 	$completed_flights_table_name = 'completed_flights';
 	$remoteid_packets_table_name = 'remoteid_packets';
 	$query = $dronedb->prepare(
-		'Select rp.unique_id,rp.timestamp,rp.heading,rp.gnd_speed,rp.vert_speed,rp.lat,rp.lon,rp.height
-					From %s cf, %s rp
-					where rp.src_addr=cf.src_addr and rp.src_addr="%s" and rp.timestamp >= "%s" 
-						and rp.timestamp <= 
-							(Select end_time
-								From completed_flights
-        							Where src_addr="%s" and start_time="%s");',
+		'Select rp.unique_id,rp.timestamp,rp.heading,rp.gnd_speed,rp.vert_speed,rp.lat,rp.lon,rp.height From %s cf, %s rp where rp.src_addr=cf.src_addr and rp.src_addr="%s" and rp.timestamp >= "%s" and rp.timestamp <= (Select end_time From completed_flights Where src_addr="%s" and start_time="%s");',
 		$completed_flights_table_name,
 		$remoteid_packets_table_name,
 		$src_addr,
