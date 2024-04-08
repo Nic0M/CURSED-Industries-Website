@@ -1,3 +1,6 @@
+goog.module('database_tables');
+const search_module = goog.require('custom_table_search');
+
 function format_speed(speed) {
 	return speed + ' m/s';
 }
@@ -171,7 +174,7 @@ function createSearchBar(search_bar_div, table_id) {
 	search_bar.setAttribute('class', 'form-control'); // Bootstrap (CSS framework) class
 	// Add event listener to search bar
 	search_bar.addEventListener('input', function() {
-		search_table(search_bar_id, table_id, [0], false); // Only search first column and make search case-insensitive
+		search_module.search_table(search_bar_id, table_id, [0], false); // Only search first column and make search case-insensitive
 		// searchTable(search_bar_id, table_id);
 	});
 

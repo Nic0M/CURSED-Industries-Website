@@ -3,7 +3,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+require_once('custom_header.php');
 require_once('custom_footer.php');
+require_once('maps.php');
 require_once('healthcheck.php');
 
 function s3_bucket_redirects() {

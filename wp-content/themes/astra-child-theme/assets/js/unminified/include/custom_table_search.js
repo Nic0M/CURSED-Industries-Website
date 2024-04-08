@@ -1,3 +1,5 @@
+goog.module('custom_table_search');
+
 /*
  * Returns the longest common subsequence between two strings
  */
@@ -103,3 +105,4 @@ function search_table(search_bar_id, table_id, columns, case_sensitive=false) {
 		}
 	}
 }
+exports = {search_table};
