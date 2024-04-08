@@ -4,8 +4,8 @@ goog.module('drone_maps');
 var live_map = L.map(
 	'live-map', // Needs to match the div id in maps.php
 	{
-		center: [40.02, -105.2],
-		zoom: 13,
+		center: [40.03, -105.1],
+		zoom: 14,
 	},
 );
 L.tileLayer(
@@ -16,3 +16,37 @@ L.tileLayer(
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	},
 ).addTo(live_map);
+
+// Red: #ff3131
+// Orange: #ff914d
+// Yellow: #ffbd59
+// Green #00bf63
+// Cyan: #0cc0df
+// Lilac: #5271ff
+// Pink: #ff66c4
+
+var DroneIconClass = L.icon.extend(
+	{
+		options: {
+			iconSize: [100, 100],
+			iconAnchor: [50, 50], // so middle of drone is center
+			popupAnchor: [0, -50], // so popup is above drone
+		}
+	},
+);
+
+var red_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_red.png'});
+var orange_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_orange.png'});
+var yellow_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_yellow.png'});
+var green_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_green.png'});
+var cyan_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_cyan.png'});
+var lilac_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_lilac.png'});
+var pink_icon = new DroneIconClass({iconUrl: 'https://cursedindustries.com/images/drone_marker_icon_pink.png'});
+
+L.marker([40.03, -105.1], {icon: red_icon}).addTo(live_map).bindPopup("I'm a red drone!");
+L.marker([40.04, -105.1], {icon: orange_icon}).addTo(live_map).bindPopup("I'm an orange drone!");
+L.marker([40.05, -105.1], {icon: yellow_icon}).addTo(live_map).bindPopup("I'm a yellow drone!");
+L.marker([40.06, -105.1], {icon: green_icon}).addTo(live_map).bindPopup("I'm a green drone!");
+L.marker([40.07, -105.1], {icon: cyan_icon}).addTo(live_map).bindPopup("I'm a cyan drone!");
+L.marker([40.08, -105.1], {icon: lilac_icon}).addTo(live_map).bindPopup("I'm a lilac drone!");
+L.marker([40.09, -105.1], {icon: pink_icon}).addTo(live_map).bindPopup("I'm a pink drone!");
