@@ -14,6 +14,7 @@ L.tileLayer(
 	{
 		minZoom: 1,
 		maxZoom: 19,
+		zoomSnap: 0.25,
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	},
 ).addTo(live_map);
@@ -48,8 +49,8 @@ red_marker = L.marker([40.03, -105.1], {icon: red_icon}).addTo(live_map).bindPop
 orange_marker = L.marker([40.04, -105.1], {icon: orange_icon}).addTo(live_map).bindPopup("I'm an orange drone!");
 yellow_marker = L.marker([40.05, -105.1], {icon: yellow_icon}).addTo(live_map).bindPopup("I'm a yellow drone!");
 green_marker = L.marker([40.06, -105.1], {icon: green_icon}).addTo(live_map).bindPopup("I'm a green drone!");
-cyan_marker = L.marker([40.07, -105.1], {icon: cyan_icon}).addTo(live_map).bindPopup("I'm a cyan drone!");
-lilac_marker = L.marker([40.08, -105.1], {icon: lilac_icon}).addTo(live_map).bindPopup("I'm a lilac drone!");
+cyan_marker = L.marker([40.07, -105.1], {icon: cyan_icon}).addTo(live_map).bindPopup("I'm a blue drone!");
+lilac_marker = L.marker([40.08, -105.1], {icon: lilac_icon}).addTo(live_map).bindPopup("I'm a purple drone!");
 purple_marker = L.marker([40.09, -105.1], {icon: pink_icon}).addTo(live_map).bindPopup("I'm a pink drone!");
 
 red_marker.setRotationAngle(45);
@@ -59,3 +60,15 @@ green_marker.setRotationAngle(180);
 cyan_marker.setRotationAngle(225);
 lilac_marker.setRotationAngle(270);
 purple_marker.setRotationAngle(315);
+
+// Create made up path for red drone
+var red_drone_path_lat_lon = [
+	[40.022, -103.2],
+	[40.023, -103.3],
+	[40.027, -103.4],
+	[40.031, -103.5],
+	[40.035, -103.87],
+	[40.03, -105.1],
+];
+
+var red_polyline = L.polyline(red_drone_path_lat_lon, {color: '#ff3131'}).addTo(live_map);
