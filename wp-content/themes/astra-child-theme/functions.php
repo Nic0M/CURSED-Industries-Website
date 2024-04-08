@@ -243,7 +243,7 @@ function get_flight_endpoint($data) {
 add_action(
 	'rest_api_init', 
 	function() { 
-		register_rest_route('drones/v1', '/get_flight_packets', 
+		register_rest_route('drones/v1', '/get_flight_packets/', 
 			array(
 			'methods' => 'GET',
 			'callback' => 'get_flight_packets',
