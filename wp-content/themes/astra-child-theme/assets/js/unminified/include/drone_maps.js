@@ -2,7 +2,7 @@ goog.module('drone_maps');
 
 // Global live map variable
 var live_map = L.map(
-	'map',
+	'live-map', // Needs to match the div id in maps.php
 	{
 		center: [40.5, -105],
 		zoom: 13,
