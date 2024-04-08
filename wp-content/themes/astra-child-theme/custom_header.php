@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Favicon
-<link rel="icon" type="image/png" href="https://cursedindustries.com/images/favicon.png">
+<link rel="icon" href="https://cursedindustries.com/images/favicon.ico">
 
 
 // Add actions to hook on creation of header
