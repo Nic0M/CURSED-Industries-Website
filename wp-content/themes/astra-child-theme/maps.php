@@ -15,7 +15,7 @@ add_shortcode('leaflet_map', 'leaflet_map_shortcode');
  * @param string $tag
  * @return string HTML div for Leaflet map
  */
-function leaflet_shortcode($atts=[], $content=null, $tag='') {
+function leaflet_map_shortcode($atts=[], $content=null, $tag='') {
 	ob_start(); // Start output buffer
 	$id = $atts['id'] ?? 'live-map';
 	$height = $atts['height'] ?? '800px';

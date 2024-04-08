@@ -26,5 +26,6 @@ function add_leaflet() {
 		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 		crossorigin=""></script>
 	<?php
-	return ob_get_clean();
+	$output = ob_get_clean();
+	return $output;
 };
