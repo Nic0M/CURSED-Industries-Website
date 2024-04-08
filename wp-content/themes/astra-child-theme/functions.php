@@ -8,13 +8,20 @@ require_once('custom_footer.php');
 require_once('maps.php');
 require_once('healthcheck.php');
 
-function s3_bucket_redirects() {
-    if ( is_page('redirect') ) {
-        wp_redirect('https://cursed-remoteid-flight-tracks.s3.us-east-2.amazonaws.com/trackserver-demo.gpx');
-        die;
-    }
-}
-add_action( 'template_redirect', 's3_bucket_redirects' );
+add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
+
+add_shortcode('load_data_table', 'load_data_table_function');
+add_shortcode('load_completed_flight_table', 'load_completed_flight_table_function');
+add_shortcode('load_active_flight_table', 'load_active_flight_table_function');
+add_shortcode('load_healthcheck_table', 'load_healthcheck_table_function');
+
+// add_action( 'template_redirect', 's3_bucket_redirects' );
+// function s3_bucket_redirects() {
+//     if ( is_page('redirect') ) {
+//         wp_redirect('https://cursed-remoteid-flight-tracks.s3.us-east-2.amazonaws.com/trackserver-demo.gpx');
+//         die;
+//     }
+// }
 
 // Connect to drone flight database
 $database_access = parse_ini_file('/home/bitnami/passwords.ini');
@@ -189,28 +196,31 @@ function astra_child_theme_enqueue_scripts() {
 	// wp_enqueue_script('edit_dist_seach', get_stylesheet_directory_uri() . '/assets/js/unminified/custom-search.js', array(), null, true);
     // wp_enqueue_script('database_tables', get_stylesheet_directory_uri() . '/assets/js/unminified/database_tables.js', array(), null, true);
 }
-add_action('wp_enqueue_scripts', 'astra_child_theme_enqueue_scripts');
 
 function load_data_table_function() {
+	ob_start();
 	echo "\n<h2>Remote ID Packets</h2>\n";
 	echo "<div id='remoteid-packets-table'>Loading Remote ID packets...</div>\n";
+	return ob_get_clean();
 }
-add_shortcode('load_data_table', 'load_data_table_function');
 
 function load_completed_flight_table_function() {
+	ob_start();
 	echo "<h2>Completed Flights</h2>\n";
 	echo "<div id='historical-flights-table'>Loading historical flights...</div>\n";
+	return ob_get_clean();
 }
-add_shortcode('load_completed_flight_table', 'load_completed_flight_table_function');
 
 function load_active_flight_table_function() {
+	ob_start();
 	echo "<h2>Active Flights</h2>\n";
 	echo "<div id='active-flights-table'>Loading active flights...</div>\n";
+	return ob_get_clean();
 }
-add_shortcode('load_active_flight_table', 'load_active_flight_table_function');
 
 function load_healthcheck_table_function() {
+	ob_start();
 	echo "<h2>Receiver Status</h2>\n";
 	echo "<div id='healthchecks-table'>Getting receiver statuses...</div>\n";
+	return ob_get_clean();
 }
-add_shortcode('load_healthcheck_table', 'load_healthcheck_table_function');

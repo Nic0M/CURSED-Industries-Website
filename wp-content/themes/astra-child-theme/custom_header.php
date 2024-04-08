@@ -10,9 +10,10 @@ add_action('wp_head', 'add_leaflet');
  * Add Leaflet to every header on the site
  * 
  * @wp-hook wp_head
- * @return void
+ * @return string HTML code for header to load Leaflet
  */
 function add_leaflet() {
+	ob_start();
 	// Add Leaflet CSS
 	?>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -25,4 +26,5 @@ function add_leaflet() {
 		integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 		crossorigin=""></script>
 	<?php
+	return ob_get_clean();
 };

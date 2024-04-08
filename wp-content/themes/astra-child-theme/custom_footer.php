@@ -2,9 +2,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
-?>
-<?php
+
+add_action('wp_footer', 'create_custom_footer');
+
 function create_custom_footer() {
+	ob_start();
 	?>
 	<footer class="site-footer" role="contentinfo">
 		<div class="custom-footer-content">
@@ -40,6 +42,5 @@ function create_custom_footer() {
 		</div>
 	</footer><!-- .site-footer -->
 	<?php
-
+	return ob_get_clean();
 }
-add_action('wp_footer', 'create_custom_footer');

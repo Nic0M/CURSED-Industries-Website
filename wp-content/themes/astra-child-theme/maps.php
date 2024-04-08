@@ -5,20 +5,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Add shortcodes
-add_shortcode('live_map', 'live_map_shortcode');
+add_shortcode('leaflet_map', 'leaflet_map_shortcode');
 
 /**
- * Creates a div with id 'live-map' that will be used to display a Leaflet map with live drone tracks
+ * Creates a div that will be used to display a Leaflet map with drone tracks
  * 
- * @param array $atts Pass height here, default is 400px
+ * @param array $atts id [default='live-map'], height [default='400px']
  * @param string $content
  * @param string $tag
- * @return void
+ * @return string HTML div for Leaflet map
  */
-function live_map_shortcode($atts=[], $content=null, $tag='') {
-	$height = $atts['height'] ?? '400px';
+function leaflet_shortcode($atts=[], $content=null, $tag='') {
+	ob_start(); // Start output buffer
+	$id = $atts['id'] ?? 'live-map';
+	$height = $atts['height'] ?? '800px';
 	?>
-	<div id="live-map" style="height: <?php echo $height?>;"></div>
+	<div id="<?php echo $id?>" style="height: <?php echo $height?>;"></div>
 	<?php
+	$output = ob_get_clean();
+	return $output;
 }
 ?>
