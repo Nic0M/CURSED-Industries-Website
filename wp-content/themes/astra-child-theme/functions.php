@@ -283,7 +283,7 @@ function get_flight_packets($data) {
 	// Return the flight data
 	$response = array(
 		'packets' => $results,
-
+		'query' => $query,
 		'current_time' => current_time('U'),
 	);
 
