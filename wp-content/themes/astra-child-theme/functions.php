@@ -210,8 +210,7 @@ function get_flight_endpoint($data) {
 	// Select the flight from the database
 	$table_name = 'remoteid_packets';
 	// $query = $dronedb->prepare("SELECT unique_id, lat, lon, gnd_speed, heading FROM $table_name WHERE src_addr = %s AND flight_num = %d;", $src_addr, $flight_num);
-	$query = $dronedb->prepare("SELECT unique_id, lat, lon, gnd_speed, heading FROM $table_name WHERE src_addr = %s", $src_addr);
-
+	$query = $dronedb->prepare("SELECT unique_id, lat, lon, gnd_speed, heading FROM $table_name WHERE src_addr = '%s'", $src_addr);
 	$results = $dronedb->get_results($query);
 
 	// Check for error
@@ -227,6 +226,7 @@ function get_flight_endpoint($data) {
 		// Longitude list
 		'lon' => array_map(function($row) { return $row->lon; }, $results),
 		// Get latest speed
+		$gnd_speed = 
 		'speed' => end($results)->gnd_speed,
 		// Get latest heading
 		'heading' => end($results)->heading,

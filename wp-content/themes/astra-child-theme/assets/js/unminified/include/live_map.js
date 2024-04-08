@@ -93,7 +93,7 @@ var red_polyline = L.polyline(
 ).addTo(live_map);
 
 async function rest_api_trajectory(){
-	let src_addr = 'MAC-2C:CF:67:14:21:0A';
+	let src_addr = 'MAC-60:60:1F:DF:3F:C1';
 	let flight_num = 1;
 	try{
 		const url = 'https://cursedindustries.com/wp-json/drones/v1/get_flight';
@@ -144,3 +144,4 @@ async function rest_api_trajectory(){
 		console.error(e);
 	}
 }
+rest_api_trajectory();
