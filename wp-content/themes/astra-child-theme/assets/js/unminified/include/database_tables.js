@@ -387,7 +387,7 @@ async function getHistoricalFlights() {
 		data.flights.forEach(flight => {
 			const row = table_body.insertRow();
 			let unique_id_cell = row.insertCell();
-			let unique_id_inner_hmtl = document.createElement('a');
+			let unique_id_inner_hmtl = unique_id_cell.createElement('a');
 			unique_id_inner_hmtl.setAttribute('href', 'https://google.com/search?q=' + flight.src_addr);
 			// Set hyperlink text
 			unique_id_inner_html.innerText = flight.unique_id;
