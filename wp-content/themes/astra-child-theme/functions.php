@@ -3,9 +3,12 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+error_log("Test");
 foreach (glob("rest-api/*.php") as $file_name) {
+	error_log($file_name);
 	require_once($file_name);
 }
+error_log("Reached");
 require_once('custom_header.php');
 require_once('custom_footer.php');
 require_once('maps.php');
