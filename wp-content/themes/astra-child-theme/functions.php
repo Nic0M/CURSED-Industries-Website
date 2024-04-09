@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 error_log("Test");
-foreach (glob("./rest-api/*.php", GLOB_NOCHECK) as $file_name) {
+foreach (glob("../rest-api/*.php", GLOB_NOCHECK) as $file_name) {
 	error_log($file_name);
 	require_once($file_name);
 }
