@@ -132,18 +132,16 @@ async function rest_api_trajectory(){
 				response = await fetch(request);
 			}
 			catch (e) {
-				console.error(e);
-				// Check if response is Wordpress HTML response
-				// if (response.headers.get('content_type').includes('text/html')) {
-				// 	console.error('Wordpress HTML response');
-				// 	break;
-				// }
-				if (response[0] === '<') {
-					console.error('Wordpress HTML response');
-					break;
-				}
+				console.error('Fetch error: ', e);
 			}
-			json_data = await response.json();
+			try {
+				json_data = await response.json();
+			}
+			catch (e) {
+				console.error('JSON error: ', e);
+				break;
+			}
+			
 
 			// Check return code
 			status_code = response.status;
