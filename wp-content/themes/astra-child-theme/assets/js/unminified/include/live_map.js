@@ -93,7 +93,7 @@ var red_polyline = L.polyline(
 ).addTo(live_map);
 
 async function rest_api_trajectory(){
-	let src_addr = 'MAC-60:60:1F:DF:3F:C1';
+	let src_addr = 'MAC-60:60:1F:5A:48:07';
 	let flight_num = 1;
 	try{
 		const url = 'https://cursedindustries.com/wp-json/drones/v1/data';
@@ -167,6 +167,8 @@ async function rest_api_trajectory(){
 			'speed': current_speed,
 			'heading': current_heading,
 		};
+		console.log('Lat Lon List:', lat_lon_list);
+		console.log('Drone stats:', drone_stats);
 		create_trajectory(live_map, lat_lon_list, orange_color, orange_icon, drone_stats);
 	}
 	catch (e) {
