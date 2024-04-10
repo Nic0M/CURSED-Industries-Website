@@ -56,7 +56,7 @@ function get_drone_data(WP_REST_Request $request) {
 		$limit,
 	);
 	// SHow query
-	error_log($query);
+	error_log($query->queryString);
 	$results = $dronedb->get_results($query);
 
 	if ($dronedb->last_error) {
