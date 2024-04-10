@@ -138,7 +138,7 @@ async function rest_api_trajectory(){
 				// 	console.error('Wordpress HTML response');
 				// 	break;
 				// }
-				if (response[0] == '<') {
+				if (response[0] === '<') {
 					console.error('Wordpress HTML response');
 					break;
 				}
