@@ -592,10 +592,101 @@ async function getRaspberryPiStatus() {
 }
 
 
+//
+// async function getFlightPackets() {
+// 	try {
+// 		// Fetch active flights
+// 		const response = await fetch('https://cursedindustries.com/wp-json/drones/v1/get_flight_packets');
+// 		const data = await response.json();
+
+// 		// Log response
+// 		console.log(data);
+
+// 		// Get table div and clear it
+// 		const table_div = document.getElementById('get-flight-table');
+// 		table_div.innerHTML = '';
+// 		// Allow div to scroll
+// 		table_div.setAttribute('style', 'overflow-x: scroll;');
+// 		// table_div.setAttribute('style', 'overflow-y: scroll;'); // TODO: sticky header
+
+// 		// Check if HTTP response is not OK
+// 		if (response.status !== 200) {
+// 			table_div.innerHTML = 'Error: Could not fetch list of specified flight. Please try again later.'
+// 			return;
+// 		}
+		
+// 		// Create search bar div
+// 		const search_bar_div = document.createElement('div');
+// 		// Add ID to search bar div
+// 		search_bar_div.setAttribute('id', 'get-flight-search-bar-div');
+// 		// Add search bar div to table div
+// 		table_div.appendChild(search_bar_div);
+// 		// Create search bar
+// 		const searchBar = createSearchBar('get-flight-search-bar-div', 'get-flight-table');
+// 		// Add search bar to search bar div
+// 		search_bar_div.appendChild(searchBar);
+
+// 		// Create last refreshed paragraph
+// 		const last_refreshed_element = document.createElement('p');
+// 		// Add class to element
+// 		const class_name = 'get-flight-last-refreshed-text'
+// 		last_refreshed_element.setAttribute('class', class_name);
+// 		// Add element to table div
+// 		table_div.appendChild(last_refreshed_element);
+// 		// Add last refreshed date to element
+// 		updateDateStr(data.current_time, class_name);
+
+		
+// 		// Create table
+// 		const table = document.createElement('table');
+
+// 		// Create table header
+// 		const header = table.createTHead();
+// 		table.setAttribute('class', 'table table-striped');
+
+// 		//	Create table header row
+// 		const headerRow = header.insertRow();
+// 		headerRow.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
+
+// 		// Create table header cells
+// 		headerRow.insertCell().innerHTML = 'Unique ID';
+// 		headerRow.insertCell().innerHTML = 'Timestamp';
+// 		headerRow.insertCell().innerHTML = 'Heading';
+// 		headerRow.insertCell().innerHTML = 'Ground Speed';
+// 		headerRow.insertCell().innerHTML = 'Vertical Speed';
+// 		headerRow.insertCell().innerHTML = 'Latitude';
+// 		headerRow.insertCell().innerHTML = 'Longitude';
+// 		headerRow.insertCell().innerHTML = 'Height';
+
+// 		// Create table body
+// 		data.flights.forEach(flight => {
+// 			const row = table.insertRow();
+// 			row.insertCell().innerHTML = flight.unique_id; // Unique ID
+// 			row.insertCell().innerHTML = format_timestamp(flight.timestamp); // Flight timestamp
+// 			row.insertCell().innerHTML = format_heading(flight.heading); // Flight heading
+// 			row.insertCell().innerHTML = format_speed(flight.gnd_speed); // Flight ground speed
+// 			row.insertCell().innerHTML = format_speed(flight.vert_speed); // Flight vertical speed
+// 			row.insertCell().innerHTML = format_latitude(flight.lat); // Flight latitude
+// 			row.insertCell().innerHTML = format_longitude(flight.lon); // Flight longitude
+// 			row.insertCell().innerHTML = format_altitude(flight.height); // Flight altitude
+// 		});
+// 		table_div.appendChild(table);
+
+// 		if (get_flight_refresh_time_text_interval_id !== 0) {
+// 			clearInterval(get_flight_refresh_time_text_interval_id);
+// 		}
+// 		get_flight_refresh_time_text_interval_id = setInterval(() => updateDateStr(data.current_time, class_name), refresh_text_interval_time); // Update last refreshed time text
+// 	}
+// 	catch (error) {
+// 		console.log('Error:', error);
+// 	}
+// }
+//
 let active_flights_refresh_time_text_interval_id = 0;
 let historical_flights_refresh_time_text_interval_id = 0;
 let remoteid_packets_refresh_time_text_interval_id = 0;
 let healthchecks_refresh_time_text_interval_id = 0;
+// let get_flight_refresh_time_text_interval_id = 0;
 let refresh_text_interval_time = 450; // 0.45 seconds (450 milliseconds)
 console.log("Creating active flights table");
 getActiveFlights();
@@ -605,6 +696,8 @@ console.log("Create Remote ID packets table");
 getRemoteIDPackets();
 console.log("Create Raspberry Pi status table");
 getRaspberryPiStatus();
+// console.log("Create Specific Flight status table");
+// getFlightPackets();
 
 // TODO: refactor code so search bar doesn't get overwritten on refresh
 // TODO: add exact search button
@@ -616,3 +709,5 @@ setInterval(getHistoricalFlights, 300e3);
 setInterval(getRemoteIDPackets, 300e3);
 // Set auto-refresh interval on Raspberry Pi status table to be 5 minutes (300 seconds)
 setInterval(getRaspberryPiStatus, 300e3);
+// Set auto-refresh interval on specific flight table to be 5 minutes (300 seconds)
+// setInterval(getFlightPackets, 300e3);
