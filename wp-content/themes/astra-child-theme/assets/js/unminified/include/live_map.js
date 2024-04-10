@@ -4,6 +4,7 @@
 
 goog.module('live_map');
 const drone_maps_module = goog.require('drone_maps');
+goog.require('leaflet_plugins.rotated_marker');;
 
 
 let live_map = L.map(
@@ -94,6 +95,7 @@ var red_polyline = L.polyline(
 
 async function rest_api_trajectory(){
 	let src_addr = 'MAC-60:60:1F:5A:48:07';
+	src_addr = 'MAC-60:60:1F:DF:3F:C1';
 	let flight_num = 1;
 	try{
 		const url = 'https://cursedindustries.com/wp-json/drones/v1/data';
