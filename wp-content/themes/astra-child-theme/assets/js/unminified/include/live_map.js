@@ -133,8 +133,9 @@ async function rest_api_trajectory(){
 			}
 			catch (e) {
 				console.error(e);
+				console.log("Request Headers:", request.headers);
 				// Check if response is Wordpress HTML response
-				if (response.headers.get('Content-Type').includes('text/html')) {
+				if (response.headers.get('content_type').includes('text/html')) {
 					console.error('Wordpress HTML response');
 					break;
 				}
