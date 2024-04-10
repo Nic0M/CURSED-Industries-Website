@@ -3,7 +3,7 @@
  */
 
 goog.module('live_map');
-goog.require('drone_maps');
+const drone_maps_module = goog.require('drone_maps');
 
 
 let live_map = L.map(
@@ -93,52 +93,101 @@ var red_polyline = L.polyline(
 ).addTo(live_map);
 
 async function rest_api_trajectory(){
-	let src_addr = 'MAC-60:60:1F:DF:3F:C1';
+	let src_addr = 'MAC-60:60:1F:5A:48:07';
 	let flight_num = 1;
 	try{
-		const url = 'https://cursedindustries.com/wp-json/drones/v1/get_flight';
+		const url = 'https://cursedindustries.com/wp-json/drones/v1/data';
 		// Add header
 		const headers = new Headers();
-		headers.append('Content-Type', 'application/json');
+		// headers.append('Content-Type', 'application/json');
 		headers.append('Source-Address', src_addr);
-		headers.append('Flight-Number', flight_num);
-		// Create request
-		const request = new Request(url, {
-			method: 'GET',
-			headers: headers,
-		});
-		const response = await fetch(request);
-		const data = await response.json();
-
-		// Check for error
-		if (data.error) {
-			console.error(data.error);
-			return;
-		}
-
-		let unique_id = data['unique_id'] ?? 'Unknown';
-		let speed = data['speed'] ?? 'Unknown';
-		let heading = data['heading'] ?? 'Unknown';
-		// Get longitude list from data
-		let lon = data['lon'] ?? [];
-		let lat = data['lat'] ?? [];
-		// Merge lat and lon into lat_lon_list
+		headers.append('Limit', 100);
+		let latest_timestamp = Date.now();
+		// Convert timestamp to YYYY-MM-DD HH:MM:SS.FFF
+		let latest_timestamp_str = new Date(latest_timestamp).toISOString();
+		// Replace the 'T' with a space and remove the 'Z' at the end to fit the SQL datetime format
+		// Also, truncate to remove extra precision beyond milliseconds
+		latest_timestamp_str = latest_timestamp_str.replace('T', ' ').replace('Z', '').substring(0, 23);
+		headers.append('Latest-Timestamp', latest_timestamp_str);
+		
+		// headers.append('Flight-Number', flight_num);
+		
+		// Loop until 404 error is returned or 10 requests are made
+		let request_count = 0;
+		let status_code = 200;
 		let lat_lon_list = [];
-		for (let i = 0; i < lon.length; i++) {
-			try{
-				lat_lon_list.push([lat[i], lon[i]]);
+		let request = null;
+		let response = null;
+		let json_data = null;
+		while (request_count < 10 && status_code == 200) {
+			// Create request
+			request = new Request(
+				url,
+				{
+					method: 'GET',
+					headers: headers,
+				},
+			);
+			try {
+				response = await fetch(request);
 			}
 			catch (e) {
-				console.error(e);
-				break
+				console.error('Fetch error: ', e);
+			}
+			try {
+				json_data = await response.json();
+			}
+			catch (e) {
+				console.error('JSON error: ', e);
+				break;
+			}
+			
+
+			// Check return code
+			status_code = response.status;
+			switch (status_code) {
+				case 200:
+					// Update Latest-Timestamp header to end of last request
+					last_data = json_data.data[json_data.data.length - 1];
+					latest_timestamp_str = last_data['timestamp'];
+					headers.set('Latest-Timestamp', latest_timestamp_str);
+					current_heading = last_data['heading'] ?? 'Unknown';
+					current_speed = last_data['gnd_speed'] ?? 'Unknown';
+					unique_id = last_data['unique_id'] ?? 'Unknown';
+
+					// Loop through data and add to lat_lon_list
+					for (let i = 0; i < json_data.data.length; i++) {
+						lat_lon_list.push([json_data.data[i]['lat'], json_data.data[i]['lon']]);
+					}
+					break;
+				case 400:
+					// Log the request
+					console.log('Bad Request:', request);
+					break;
+				case 404:
+					// End of data
+					console.log('End of data');
+					break;
+				case 500:
+					// Database may be down
+					console.log('Internal server error');
+					break;
+			}
+
+			// Check for error if not 404
+			if (status_code !== 404 && json_data.error) {
+				console.error(json_data.error);
 			}
 		}
+			
 		drone_stats = {
-			unique_id: unique_id,
-			speed: speed,
-			heading: heading,
+			'unique_id': unique_id,
+			'speed': current_speed,
+			'heading': current_heading,
 		};
-		create_trajectory(live_map, lat_lon_list, orange_color, orange_icon, drone_stats);
+		console.log('Lat Lon List:', lat_lon_list);
+		console.log('Drone stats:', drone_stats);
+		drone_maps_module.create_trajectory(live_map, lat_lon_list, orange_color, orange_icon, drone_stats);
 	}
 	catch (e) {
 		console.error(e);
