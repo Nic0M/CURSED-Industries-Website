@@ -153,12 +153,15 @@ async function rest_api_trajectory(){
 					// End of data
 					console.log('End of data');
 					break;
+				case 500:
+					// Database may be down
+					console.log('Internal server error');
+					break;
 			}
 
 			// Check for error if not 404
 			if (status_code !== 404 && json_data.error) {
 				console.error(json_data.error);
-				return;
 			}
 		}
 			
