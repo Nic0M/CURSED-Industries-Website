@@ -155,8 +155,8 @@ async function rest_api_trajectory(){
 					break;
 			}
 
-			// Check for error
-			if (json_data.error) {
+			// Check for error if not 404
+			if (status_code !== 404 && json_data.error) {
 				console.error(json_data.error);
 				return;
 			}
