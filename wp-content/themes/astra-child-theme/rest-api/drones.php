@@ -53,22 +53,25 @@ function get_drone_data(WP_REST_Request $request) {
 	if ($src_addr !== null && !preg_match('/^(?:MAC|BDA)-(?:[A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}$/', $src_addr)) {
 		return new WP_REST_Response(array('error' => 'Invalid Source-Address header address. Must be of the form MAC-XX:XX:XX:XX:XX:XX or BDA-XX:XX:XX:XX:XX:XX'), 400);
 	}
-	if ($src_addr !== null) {
-		$src_addr_query_str = ' = ' . $src_addr;
-	}
-	else {
-		$src_addr_query_str = ' IS NOT NULL';
-	}
 
 	global $dronedb;
 	$data_table = "remoteid_packets";
 
-	$query = $dronedb->prepare(
-		"SELECT * FROM $data_table WHERE timestamp < %s AND src_addr %s ORDER BY timestamp DESC LIMIT %d;",
-		$latest_timestamp,
-		$src_addr_query_str,
-		$limit,
-	);
+	if ($src_addr === null) {
+		$query = $dronedb->prepare(
+			"SELECT * FROM $data_table WHERE timestamp < %s ORDER BY timestamp DESC LIMIT %d;",
+			$latest_timestamp,
+			$limit,
+		);
+	}
+	else {
+		$query = $dronedb->prepare(
+			"SELECT * FROM $data_table WHERE timestamp < %s AND src_addr = %s ORDER BY timestamp DESC LIMIT %d;",
+			$latest_timestamp,
+			$src_addr,
+			$limit,
+		);
+	}
 	// Show query
 	error_log("Executing query: " . $query);
 	$results = $dronedb->get_results($query);
