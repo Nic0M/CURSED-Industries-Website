@@ -156,8 +156,8 @@ async function rest_api_trajectory(){
 			}
 
 			// Check for error
-			if (data.error) {
-				console.error(data.error);
+			if (json_data.error) {
+				console.error(json_data.error);
 				return;
 			}
 		}
