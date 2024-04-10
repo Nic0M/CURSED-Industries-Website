@@ -18,8 +18,10 @@ $default_limit = 25;
 $max_limit = 100;
 function get_drone_data(WP_REST_Request $request) {
 	$headers = $request->get_headers();
+	error_log(print_r($headers, true));
 	$headers_lowercase = array_change_key_case($headers, CASE_LOWER);
-	
+	error_log(print_r($headers_lowercase, true));
+
 	if (!isset($headers_lowercase['latest-timestamp'])) {
 		return new WP_REST_Response(array('error' => 'Missing \'Latest-Timestamp\' Header'), 400);
 	}
