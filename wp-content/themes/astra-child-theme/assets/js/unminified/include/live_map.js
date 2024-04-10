@@ -130,12 +130,15 @@ async function rest_api_trajectory(){
 			);
 			try {
 				response = await fetch(request);
-				console.log("Response Headers:", response.headers);
 			}
 			catch (e) {
 				console.error(e);
 				// Check if response is Wordpress HTML response
-				if (response.headers.get('content_type').includes('text/html')) {
+				// if (response.headers.get('content_type').includes('text/html')) {
+				// 	console.error('Wordpress HTML response');
+				// 	break;
+				// }
+				if (response[0] == '<') {
 					console.error('Wordpress HTML response');
 					break;
 				}
