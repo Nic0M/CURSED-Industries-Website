@@ -20,9 +20,9 @@ function get_drone_data(WP_REST_Request $request) {
 	$headers = $request->get_headers();
 	error_log(print_r(array_keys($headers), true));
 
-	if (!isset($headers['latest-timestamp'])) {
-		return new WP_REST_Response(array('error' => 'Missing \'Latest-Timestamp\' Header'), 400);
-	}
+	// if (!isset($headers['latest-timestamp'])) {
+	// 	return new WP_REST_Response(array('error' => 'Missing \'Latest-Timestamp\' Header'), 400);
+	// }
 	$latest_timestamp = $headers['latest-timestamp'][0];
 	if (!preg_match('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}/', $latest_timestamp)) {
 		return new WP_REST_Response(array('error' => 'Invalid \'Latest-Timestamp\' header. Format must be \'YYYY-MM-DD HH:MM:SS.FFF\''), 400);
