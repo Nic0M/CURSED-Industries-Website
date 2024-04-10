@@ -50,8 +50,8 @@ function get_drone_data(WP_REST_Request $request) {
 	// Check for source address header
 	$src_addr = $headers['source_address'][0] ?? null;
 	// Validate source address format
-	if ($src_addr !== null && !preg_match('/^(?:MAC|BDA)-(?:[A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}$/', $src_addr)) {
-		return new WP_REST_Response(array('error' => 'Invalid Source-Address header address. Must be of the form MAC-XX:XX:XX:XX:XX:XX or BDA-XX:XX:XX:XX:XX:XX'), 400);
+	if ($src_addr !== null && !preg_match('/^(?:MAC|BDA)-(?:[A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}$/i', $src_addr)) {
+		return new WP_REST_Response(array('error' => 'Invalid Source-Address header address. Must be of the form MAC-XX:XX:XX:XX:XX:XX or BDA-XX:XX:XX:XX:XX:XX where X is a hex character.'), 400);
 	}
 
 	global $dronedb;
