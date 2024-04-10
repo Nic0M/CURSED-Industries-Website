@@ -115,18 +115,26 @@ async function rest_api_trajectory(){
 		// Loop until 404 error is returned or 10 requests are made
 		let request_count = 0;
 		let status_code = 200;
-		lat_lon_list = [];
+		let lat_lon_list = [];
+		let request = null;
+		let response = null;
+		let json_data = null;
 		while (request_count < 10 && status_code == 200) {
 			// Create request
-			const request = new Request(
+			request = new Request(
 				url,
 				{
 					method: 'GET',
 					headers: headers,
 				},
 			);
-			const response = await fetch(request);
-			const json_data = await response.json();
+			try {
+				response = await fetch(request);
+			}
+			catch (e) {
+				console.error(e);
+			}
+			json_data = await response.json();
 
 			// Check return code
 			status_code = response.status;
