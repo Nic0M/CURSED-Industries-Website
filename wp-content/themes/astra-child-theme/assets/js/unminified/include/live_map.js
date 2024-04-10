@@ -187,7 +187,7 @@ async function rest_api_trajectory(){
 		};
 		console.log('Lat Lon List:', lat_lon_list);
 		console.log('Drone stats:', drone_stats);
-		create_trajectory(live_map, lat_lon_list, orange_color, orange_icon, drone_stats);
+		drone_maps.create_trajectory(live_map, lat_lon_list, orange_color, orange_icon, drone_stats);
 	}
 	catch (e) {
 		console.error(e);
