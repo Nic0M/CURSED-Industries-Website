@@ -53,7 +53,7 @@ function get_drone_data(WP_REST_Request $request) {
 	if ($src_addr !== null && !preg_match('/^(?:MAC|BDA)-(?:[A-Fa-f0-9]{2}:){5}[A-Fa-f0-9]{2}$/', $src_addr)) {
 		return new WP_REST_Response(array('error' => 'Invalid Source-Address header address. Must be of the form MAC-XX:XX:XX:XX:XX:XX or BDA-XX:XX:XX:XX:XX:XX'), 400);
 	}
-	if $src_addr !== null {
+	if ($src_addr !== null) {
 		$src_addr_query_str = ' = ' . $src_addr;
 	}
 	else {
