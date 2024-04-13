@@ -29,7 +29,7 @@ function create_trajectory(map, lat_lon_list, trajectory_color, drone_marker, dr
 	drone_marker.setRotationAngle(heading);
 	
 	// Set popup text
-	drone_marker.setPopupContent(`UAS ID: <a href="/flight-information?flight=${flight_num}>${unique_id}</a> <br> Speed: ${speed} m/s <br> Heading: ${heading}°`);
+	drone_marker.setPopupContent(`UAS ID: <a href="/flight-information?flight=${flight_num}">${unique_id}</a> <br> Speed: ${speed} m/s <br> Heading: ${heading}°`);
 };
 
 exports = {create_trajectory};
