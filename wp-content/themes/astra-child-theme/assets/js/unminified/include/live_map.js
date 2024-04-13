@@ -156,6 +156,7 @@ async function rest_api_trajectory(){
 					current_heading = last_data['heading'] ?? 'Unknown';
 					current_speed = last_data['gnd_speed'] ?? 'Unknown';
 					unique_id = last_data['unique_id'] ?? 'Unknown';
+					flight_num = last_data['flight_num'] ?? 0;
 
 					// Loop through data and add to lat_lon_list
 					for (let i = 0; i < json_data.data.length; i++) {
@@ -186,6 +187,7 @@ async function rest_api_trajectory(){
 			'unique_id': unique_id,
 			'speed': current_speed,
 			'heading': current_heading,
+			'flight_num': flight_num,
 		};
 		console.log('Lat Lon List:', lat_lon_list);
 		console.log('Drone stats:', drone_stats);

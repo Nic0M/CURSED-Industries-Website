@@ -15,6 +15,7 @@ function create_trajectory(map, lat_lon_list, trajectory_color, drone_marker, dr
 	let unique_id = drone_stats['unique_id'] ?? 'Unknown';
 	let speed = drone_stats['speed'] ?? 'Unknown';
 	let heading = drone_stats['heading'] ?? 'Unknown';
+	let flight_num = drone_stats['flight_num'] ?? 0;
 
 	// Set marker location to latest location
 	drone_marker.iconAnchor = lat_lon_list[lat_lon_list.length - 1];
@@ -28,7 +29,7 @@ function create_trajectory(map, lat_lon_list, trajectory_color, drone_marker, dr
 	drone_marker.setRotationAngle(heading);
 	
 	// Set popup text
-	drone_marker.setPopupContent(`Unique ID: ${unique_id} <br> Speed: ${speed} m/s <br> Heading: ${heading}°`);
+	drone_marker.setPopupContent(`UAS ID: <a href="/flight-information?flight=${flight_num}>${unique_id}</a> <br> Speed: ${speed} m/s <br> Heading: ${heading}°`);
 };
 
 exports = {create_trajectory};
