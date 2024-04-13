@@ -1,7 +1,7 @@
 goog.module('drone_maps');
 goog.require('leaflet_plugins.rotated_marker')
 
-function create_trajectory(map, lat_lon_list, trajectory_color, marker_icon, drone_stats) {
+function create_trajectory(map, lat_lon_list, trajectory_color, drone_marker, drone_stats) {
 
 	trajectory = L.polyline(
 		lat_lon_list,
@@ -17,7 +17,7 @@ function create_trajectory(map, lat_lon_list, trajectory_color, marker_icon, dro
 	let heading = drone_stats['heading'] ?? 'Unknown';
 
 	// Set marker location to latest location
-	marker_icon.iconAnchor = lat_lon_list[lat_lon_list.length - 1];
+	drone_marker.iconAnchor = lat_lon_list[lat_lon_list.length - 1];
 	
 	// ASTM F3411-22a defines heading as degrees clockwise from true north
 	// 361° value is used to represent Invalid, No Value, or Unknown
@@ -25,10 +25,10 @@ function create_trajectory(map, lat_lon_list, trajectory_color, marker_icon, dro
 		heading = "Unknown";
 	}
 	// Leaflet rotation is also measured in degrees clockwise from the north
-	marker_icon.setRotationAngle(heading);
+	drone_marker.setRotationAngle(heading);
 	
 	// Set popup text
-	marker_icon.setPopupContent(`Unique ID: ${unique_id} <br> Speed: ${speed} m/s <br> Heading: ${heading}°`);
+	drone_marker.setPopupContent(`Unique ID: ${unique_id} <br> Speed: ${speed} m/s <br> Heading: ${heading}°`);
 };
 
 exports = {create_trajectory};
