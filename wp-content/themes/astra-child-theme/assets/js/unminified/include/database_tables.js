@@ -372,6 +372,9 @@ async function getHistoricalFlights() {
 		// Create header
 		const table_header = table.createTHead();
 		const header_row = table_header.insertRow();
+
+		header_row.setAttribute('style', 'background-color: #00aa00; color: black;'); // Green header
+		
 		// Create header cells
 		header_row.insertCell().innerHTML = 'Unique ID';
 		header_row.insertCell().innerHTML = 'Duration';
