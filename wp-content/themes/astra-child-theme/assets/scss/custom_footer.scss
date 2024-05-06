@@ -1,0 +1,20 @@
+.custom-footer-content{
+	display: flex;
+	justify-content: space-between;
+	align-items: center; /* Center items vertically */
+}
+
+.custom-footer-links{
+	align-self: flex-start;
+	text-align: left;
+}
+
+.custom-footer-copyright{
+	align-self: center;
+	text-align: center;
+}
+
+.custom-footer-language-selector{
+	align-self: flex-end;
+	text-align: right;
+}
